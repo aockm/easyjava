@@ -1,12 +1,17 @@
 package com.tockm.buider;
 
+import com.tockm.bean.Constants;
+import com.tockm.bean.TableInfo;
 import com.tockm.utils.PropertiesUtils;
+import com.tockm.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BuildTable {
@@ -30,13 +35,24 @@ public class BuildTable {
     public static void getTables() {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        List<TableInfo> tables = new ArrayList();
         try {
             preparedStatement = connection.prepareStatement(SQL_SHOW_TABLES_STATUS);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 String tableName = resultSet.getString("name");
                 String comment = resultSet.getString("comment");
-                logger.info("tableName:{}, comment:{}", tableName, comment);
+                TableInfo tableInfo = new TableInfo();
+                tableInfo.setTableName(tableName);
+                String beanName = tableName;
+                if (Constants.IGNORE_TABLE_PREFIX) {
+                    beanName = tableName.substring(beanName.indexOf("_") + 1);
+                }
+                beanName = processField(beanName,true);
+                tableInfo.setBeanName(beanName);
+                tableInfo.setComment(comment);
+                tableInfo.setBeanParamName(beanName);
+                logger.info(beanName);
             }
         }catch (Exception e) {
             logger.error("读取表失败", e);
@@ -63,5 +79,15 @@ public class BuildTable {
                 }
             }
         }
+    }
+
+    private static String processField(String field, Boolean upperCaseFieldLetter) {
+        StringBuffer sb = new StringBuffer();
+        String[] fields = field.split("_");
+        sb.append(upperCaseFieldLetter?StringUtils.upperCaseFirstLetter(fields[0]):fields[0]);
+        for (int i = 1; i < fields.length; i++) {
+            sb.append(StringUtils.upperCaseFirstLetter(fields[i]));
+        }
+        return sb.toString();
     }
 }
