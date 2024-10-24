@@ -14,7 +14,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class BuildTable {
@@ -37,10 +39,10 @@ public class BuildTable {
             logger.error("数据库连接失败", e);
         }
     }
-    public static void getTables() {
+    public static List<TableInfo> getTables() {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        List<TableInfo> tables = new ArrayList();
+        List<TableInfo> tableInfoList = new ArrayList();
         try {
             preparedStatement = connection.prepareStatement(SQL_SHOW_TABLES_STATUS);
             resultSet = preparedStatement.executeQuery();
@@ -57,7 +59,12 @@ public class BuildTable {
                 tableInfo.setBeanName(beanName);
                 tableInfo.setComment(comment);
                 tableInfo.setBeanParamName(beanName + Constants.SUFFIX_BEAN_PARAM);
-                List<FieldInfo> fieldInfoList = readFieldInfo(tableInfo);
+
+                readFieldInfo(tableInfo);
+
+                getKeyIndexInfo(tableInfo);
+
+                tableInfoList.add(tableInfo);
 
             }
         }catch (Exception e) {
@@ -85,6 +92,7 @@ public class BuildTable {
                 }
             }
         }
+        return tableInfoList;
     }
 
     private static List<FieldInfo> readFieldInfo(TableInfo tableInfo) {
@@ -131,6 +139,7 @@ public class BuildTable {
             }
             tableInfo.setFieldList(fieldInfoList);
             getKeyIndexInfo(tableInfo);
+
             logger.info("tableinfo:{}", JsonUtils.convertObject2Json(tableInfo));
         }catch (Exception e) {
             logger.error("读取字段失败", e);
@@ -158,6 +167,10 @@ public class BuildTable {
         ResultSet fieldResult = null;
         List<FieldInfo> fieldInfoList = new ArrayList();
         try {
+            Map<String, FieldInfo> fieldInfoMap = new HashMap();
+            for (FieldInfo fieldInfo : tableInfo.getFieldList()) {
+                fieldInfoMap.put(fieldInfo.getFieldName(), fieldInfo);
+            }
             preparedStatement = connection.prepareStatement(String.format(SQL_SHOW_TABLES_INDEX, tableInfo.getTableName()));
             fieldResult = preparedStatement.executeQuery();
             while (fieldResult.next()) {
@@ -172,11 +185,7 @@ public class BuildTable {
                     keyFieldList = new ArrayList();
                     tableInfo.getKeyIndexMap().put(keyName, keyFieldList);
                 }
-                for (FieldInfo fieldInfo : tableInfo.getFieldList()) {
-                    if (fieldInfo.getFieldName().equals(columnName)) {
-                        keyFieldList.add(fieldInfo);
-                    }
-                }
+                keyFieldList.add(fieldInfoMap.get(columnName));
             }
         }catch (Exception e) {
             logger.error("读取索引失败", e);
