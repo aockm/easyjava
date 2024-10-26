@@ -2,21 +2,41 @@ package com.tockm.buider;
 
 import com.tockm.bean.Constants;
 import com.tockm.bean.TableInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 public class BuildPo {
+    public static final Logger logger = LoggerFactory.getLogger(BuildPo.class);
     public static void execute(TableInfo tableInfo) {
         File folder = new File(Constants.PATH_PO);
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        File file = new File(folder , tableInfo.getBeanName()+".java");
+        File poFile = new File(folder , tableInfo.getBeanName()+".java");
+        OutputStream out = null;
+        OutputStreamWriter osw = null;
+        BufferedWriter bw = null;
         try {
-            file.createNewFile();
-        }catch (IOException e){
-            e.printStackTrace();
+            out = new FileOutputStream(poFile);
+            osw = new OutputStreamWriter(out, "UTF-8");
+            bw = new BufferedWriter(osw);
+            bw.write("package "+Constants.PACKAGE_PO+";");
+            bw.newLine();
+            bw.write("import java.io.Serializable;");
+            bw.newLine();
+            bw.write("public class "+tableInfo.getBeanName()+" implements Serializable {");
+            bw.newLine();
+            bw.newLine();
+            bw.write("}");
+            bw.flush();
+        }catch (Exception e) {
+            logger.error("创建po失败",e);
+        }finally {
+            if (bw != null) {try {bw.close();} catch (IOException e) {e.printStackTrace();}}
+            if (osw != null) {try {osw.close();} catch (IOException e) {e.printStackTrace();}}
+            if (out != null) {try {out.close();} catch (IOException e) {e.printStackTrace();}}
         }
     }
 }
