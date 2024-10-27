@@ -40,6 +40,7 @@ public class BuildPo {
             bw.write("public class "+tableInfo.getBeanName()+" implements Serializable {");
             bw.newLine();
             for (FieldInfo field: tableInfo.getFieldList()){
+                if (field.getComment()!=null && !field.getComment().equals("")) BuildComment.createFieldComment(bw, field.getComment());
                 bw.write("\tprivate " + field.getJavaType()+" " +field.getPropertyName()+";");
                 bw.newLine();
                 bw.newLine();

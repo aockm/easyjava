@@ -140,7 +140,7 @@ public class BuildTable {
             tableInfo.setFieldList(fieldInfoList);
             getKeyIndexInfo(tableInfo);
 
-            logger.info("tableinfo:{}", JsonUtils.convertObject2Json(tableInfo));
+            logger.info("tableInfo:{}", JsonUtils.convertObject2Json(tableInfo));
         }catch (Exception e) {
             logger.error("读取字段失败", e);
         }finally {
@@ -190,12 +190,10 @@ public class BuildTable {
         }catch (Exception e) {
             logger.error("读取索引失败", e);
         }finally {
-            if (fieldResult != null) {
-                try {
-                    fieldResult.close();
-                }catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if (fieldResult != null) try {
+                fieldResult.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             if (preparedStatement != null) {
                 try {

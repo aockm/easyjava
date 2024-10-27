@@ -13,4 +13,9 @@ public class BuildComment {
         bw.write(" *@date: "+ DateUtils.format(new Date(), DateUtils._YYYYMMDD) + "\n");
         bw.write(" */\n");
     }
+    public static void createFieldComment(BufferedWriter bw, String fieldComment) throws IOException {
+        bw.write("\t/**\n");
+        bw.write("\t * "+fieldComment + "\n");
+        bw.write("\t */\n");
+    }
 }
