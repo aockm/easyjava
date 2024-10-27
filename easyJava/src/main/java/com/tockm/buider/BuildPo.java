@@ -1,6 +1,7 @@
 package com.tockm.buider;
 
 import com.tockm.bean.Constants;
+import com.tockm.bean.FieldInfo;
 import com.tockm.bean.TableInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,10 +25,25 @@ public class BuildPo {
             bw = new BufferedWriter(osw);
             bw.write("package "+Constants.PACKAGE_PO+";");
             bw.newLine();
+            bw.newLine();
             bw.write("import java.io.Serializable;");
             bw.newLine();
+            if (tableInfo.getHaveDate()||tableInfo.getHaveDateTime()) {
+                bw.write("import java.util.Date;");
+            }
+            if (tableInfo.getHaveBigDecimal()) {
+                bw.write("import java.math.BigDecimal;");
+            }
+            bw.newLine();
+            bw.newLine();
+            BuildComment.createClassComment(bw,tableInfo.getComment());
             bw.write("public class "+tableInfo.getBeanName()+" implements Serializable {");
             bw.newLine();
+            for (FieldInfo field: tableInfo.getFieldList()){
+                bw.write("\tprivate " + field.getJavaType()+" " +field.getPropertyName()+";");
+                bw.newLine();
+                bw.newLine();
+            }
             bw.newLine();
             bw.write("}");
             bw.flush();
