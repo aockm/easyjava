@@ -6,6 +6,15 @@ import com.tockm.utils.PropertiesUtils;
 public class Constants {
     public static Boolean IGNORE_TABLE_PREFIX;
     public static String SUFFIX_BEAN_PARAM;
+    public static String IGNORE_BEAN_TOJSON_FIELD;
+    public static String IGNORE_BEAN_TOJSON_EXPRESSION;
+    public static String IGNORE_BEAN_TOJSON_CLASS;
+    public static String BEAN_DATE_FORMAT_EXPRESSION;
+    public static String BEAN_DATE_FORMAT_CLASS;
+    public static String BEAN_DATE_UNFORMAT_EXPRESSION;
+    public static String BEAN_DATE_UNFORMAT_CLASS;
+
+
     public static String PATH_BASE;
     public static String PATH_JAVA = "java";
     public static String PATH_RESOURCES = "resources";
@@ -14,6 +23,14 @@ public class Constants {
     public static String PACKAGE_PO;
 
     static {
+
+        IGNORE_BEAN_TOJSON_FIELD = PropertiesUtils.getProperty("ignore.bean.tojson.field");
+        IGNORE_BEAN_TOJSON_EXPRESSION =PropertiesUtils.getProperty("ignore.bean.tojson.expression");
+        IGNORE_BEAN_TOJSON_CLASS =PropertiesUtils.getProperty("ignore.bean.tojson.class");
+        BEAN_DATE_FORMAT_EXPRESSION =PropertiesUtils.getProperty("bean.date.format.expression");
+        BEAN_DATE_FORMAT_CLASS =PropertiesUtils.getProperty("bean.date.format.class");
+        BEAN_DATE_UNFORMAT_EXPRESSION = PropertiesUtils.getProperty("bean.date.unformat.expression");
+        BEAN_DATE_UNFORMAT_CLASS =PropertiesUtils.getProperty("bean.date.unformat.class");
         IGNORE_TABLE_PREFIX = Boolean.valueOf(PropertiesUtils.getProperty("ignore.table.prefix"));
         SUFFIX_BEAN_PARAM = PropertiesUtils.getProperty("suffix.bean.param");
         PATH_BASE = PropertiesUtils.getProperty("path.base");
