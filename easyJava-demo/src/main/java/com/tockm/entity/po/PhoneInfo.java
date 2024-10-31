@@ -4,11 +4,13 @@ import java.io.Serializable;
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 /**
  *@Description: 手机号码
- *@date: 2024/10/29
+ *@date: 2024/10/31
  */
 public class PhoneInfo implements Serializable {
 	private Integer id;
@@ -19,6 +21,7 @@ public class PhoneInfo implements Serializable {
 
 	private String city;
 
+	@JsonIgnore
 	private String sp;
 
 	private String name;
@@ -33,4 +36,52 @@ public class PhoneInfo implements Serializable {
 	private Date createTime;
 
 
+	public void setId(Integer id){
+		this.id = id;
+	}
+	public Integer getId(){
+		return this.id;
+	}
+	public void setPhone(String phone){
+		this.phone = phone;
+	}
+	public String getPhone(){
+		return this.phone;
+	}
+	public void setProvince(String province){
+		this.province = province;
+	}
+	public String getProvince(){
+		return this.province;
+	}
+	public void setCity(String city){
+		this.city = city;
+	}
+	public String getCity(){
+		return this.city;
+	}
+	public void setSp(String sp){
+		this.sp = sp;
+	}
+	public String getSp(){
+		return this.sp;
+	}
+	public void setName(String name){
+		this.name = name;
+	}
+	public String getName(){
+		return this.name;
+	}
+	public void setSex(String sex){
+		this.sex = sex;
+	}
+	public String getSex(){
+		return this.sex;
+	}
+	public void setCreateTime(Date createTime){
+		this.createTime = createTime;
+	}
+	public Date getCreateTime(){
+		return this.createTime;
+	}
 }

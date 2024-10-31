@@ -4,6 +4,7 @@ import com.tockm.bean.Constants;
 import com.tockm.bean.FieldInfo;
 import com.tockm.bean.TableInfo;
 import com.tockm.utils.DateUtils;
+import com.tockm.utils.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,18 @@ public class BuildPo {
                 bw.write(Constants.BEAN_DATE_FORMAT_CLASS+";\n");
                 bw.write(Constants.BEAN_DATE_UNFORMAT_CLASS+";\n");
             }
+            //  忽略属性
+            Boolean haveIgnoreBean = false;
+            for (FieldInfo field: tableInfo.getFieldList()) {
+                if (ArrayUtils.contains(Constants.IGNORE_BEAN_TOJSON_FIELD.split(","), field.getPropertyName())) {
+                    haveIgnoreBean = true;
+                    break;
+                }
+            }
+            if (haveIgnoreBean) {
+                bw.write(Constants.IGNORE_BEAN_TOJSON_CLASS+";\n");
+                bw.newLine();
+            }
             if (tableInfo.getHaveBigDecimal()) {
                 bw.write("import java.math.BigDecimal;");
             }
@@ -57,11 +70,24 @@ public class BuildPo {
                     bw.write("\t"+String.format(Constants.BEAN_DATE_UNFORMAT_EXPRESSION, DateUtils.YYYY_MM_DD));
                     bw.newLine();
                 }
+                if (ArrayUtils.contains(Constants.IGNORE_BEAN_TOJSON_FIELD.split(","),field.getPropertyName())) {
+                    bw.write("\t"+String.format(Constants.IGNORE_BEAN_TOJSON_EXPRESSION, DateUtils.YYYY_MM_DD));
+                    bw.newLine();
+                }
                 bw.write("\tprivate " + field.getJavaType()+" " +field.getPropertyName()+";");
                 bw.newLine();
                 bw.newLine();
             }
             bw.newLine();
+            for(FieldInfo field: tableInfo.getFieldList()){
+                String tempField = StringUtils.upperCaseFirstLetter(field.getPropertyName());
+                bw.write("\tpublic void set"+tempField+"("+field.getJavaType()+" "+field.getPropertyName()+"){\n");
+                bw.write("\t\tthis."+field.getPropertyName()+" = "+field.getPropertyName()+";\n");
+                bw.write("\t}\n");
+                bw.write("\tpublic "+field.getJavaType()+ " get"+tempField+"(){\n");
+                bw.write("\t\treturn this."+field.getPropertyName()+";\n");
+                bw.write("\t}\n");
+            }
             bw.write("}");
             bw.flush();
         }catch (Exception e) {
