@@ -88,6 +88,29 @@ public class BuildPo {
                 bw.write("\t\treturn this."+field.getPropertyName()+";\n");
                 bw.write("\t}\n");
             }
+            // 重写tostring
+            StringBuffer toString = new StringBuffer();
+            Integer index = 0;
+            for (FieldInfo field: tableInfo.getFieldList()){
+                String tempField = field.getComment();
+                if (field.getComment()==null || field.getComment().equals("")) {
+                    tempField = field.getPropertyName();
+                }
+                toString.append(tempField+":\"+("+field.getPropertyName()+"== null?\"空\" : " +field.getPropertyName()+")");
+
+                if (index < tableInfo.getFieldList().size() - 1) {
+                    index ++;
+                    toString.append("+").append("\",");
+                }
+            }
+            String toStringStr = toString.toString();
+            toStringStr = "\""+toStringStr;
+
+            System.out.println(toString);
+            bw.write("\t@Override\n");
+            bw.write("\tpublic String toString() {\n");
+            bw.write("\t\treturn "+toStringStr+";\n");
+            bw.write("\t}\n");
             bw.write("}");
             bw.flush();
         }catch (Exception e) {

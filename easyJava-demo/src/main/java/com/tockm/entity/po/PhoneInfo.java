@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *@Description: 手机号码
- *@date: 2024/10/31
+ *@date: 2024/11/01
  */
 public class PhoneInfo implements Serializable {
 	private Integer id;
@@ -83,5 +83,9 @@ public class PhoneInfo implements Serializable {
 	}
 	public Date getCreateTime(){
 		return this.createTime;
+	}
+	@Override
+	public String toString() {
+		return "id:"+(id== null?"空" : id)+",phone:"+(phone== null?"空" : phone)+",province:"+(province== null?"空" : province)+",city:"+(city== null?"空" : city)+",sp:"+(sp== null?"空" : sp)+",name:"+(name== null?"空" : name)+",sex:"+(sex== null?"空" : sex)+",创建时间:"+(createTime== null?"空" : createTime);
 	}
 }
