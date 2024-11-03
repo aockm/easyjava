@@ -18,4 +18,9 @@ public class BuildComment {
         bw.write("\t * "+fieldComment + "\n");
         bw.write("\t */\n");
     }
+    public static void createMethodComment(BufferedWriter bw, String methodComment) throws IOException {
+        bw.write("\t/**\n");
+        bw.write("\t * "+methodComment + "\n");
+        bw.write("\t */\n");
+    }
 }

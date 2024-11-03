@@ -20,6 +20,11 @@ public class BuildBase {
         headerInfoList.clear();
         headerInfoList.add("package "+Constants.PACKAGE_UTILS+";");
         build(headerInfoList,"DateUtils", Constants.PATH_UTILS);
+
+        // 生成baseMapper
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_MAPPER+";");
+        build(headerInfoList,"BaseMapper", Constants.PATH_MAPPER);
     }
 
     public static void build(List<String> headerInfo, String fileName, String outPutPath) {

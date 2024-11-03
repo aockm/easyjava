@@ -13,12 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BuildQuery {
-    public static final Logger logger = LoggerFactory.getLogger(BuildPo.class);
+    public static final Logger logger = LoggerFactory.getLogger(BuildQuery.class);
 
     public static void execute(TableInfo tableInfo) {
         File folder = new File(Constants.PATH_QUERY);
-        logger.info(Constants.PATH_QUERY);
-        logger.info(Constants.PATH_PO);
         if (!folder.exists()) {
             folder.mkdirs();
         }
@@ -103,7 +101,7 @@ public class BuildQuery {
             bw.write("}");
             bw.flush();
         }catch (Exception e) {
-            logger.error("创建po失败",e);
+            logger.error("创建query失败",e);
         }finally {
             if (bw != null) {try {bw.close();} catch (IOException e) {e.printStackTrace();}}
             if (osw != null) {try {osw.close();} catch (IOException e) {e.printStackTrace();}}

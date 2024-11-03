@@ -186,6 +186,7 @@ public class BuildTable {
                     tableInfo.getKeyIndexMap().put(keyName, keyFieldList);
                 }
                 keyFieldList.add(fieldInfoMap.get(columnName));
+                logger.info("添加主键:{}", columnName);
             }
         }catch (Exception e) {
             logger.error("读取索引失败", e);

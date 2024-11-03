@@ -15,6 +15,7 @@ public class Constants {
     public static String BEAN_DATE_UNFORMAT_CLASS;
     // 模糊搜索
     public static String SUFFIX_BEAN_QUERY_FUZZY;
+    public static String SUFFIX_MAPPERS;
     public static String SUFFIX_BEAN_QUERY_TIME_START;
     public static String SUFFIX_BEAN_QUERY_TIME_END;
     public static String PATH_BASE;
@@ -24,11 +25,13 @@ public class Constants {
     public static String PACKAGE_PO;
     public static String PACKAGE_QUERY;
     public static String PACKAGE_UTILS;
+    public static String PACKAGE_MAPPER;
     public static String PACKAGE_ENUMS;
     public static String PATH_PO;
     public static String PATH_QUERY;
     public static String PATH_UTILS;
     public static String PATH_ENUMS;
+    public static String PATH_MAPPER;
 
 
     static {
@@ -42,6 +45,7 @@ public class Constants {
         BEAN_DATE_UNFORMAT_CLASS =PropertiesUtils.getProperty("bean.date.unformat.class");
         IGNORE_TABLE_PREFIX = Boolean.valueOf(PropertiesUtils.getProperty("ignore.table.prefix"));
         SUFFIX_BEAN_QUERY = PropertiesUtils.getProperty("suffix.bean.query");
+        SUFFIX_MAPPERS = PropertiesUtils.getProperty("suffix.mappers");
         SUFFIX_BEAN_QUERY_FUZZY = PropertiesUtils.getProperty("suffix.bean.query.fuzzy");
         SUFFIX_BEAN_QUERY_TIME_START = PropertiesUtils.getProperty("suffix.bean.query.time.start");
         SUFFIX_BEAN_QUERY_TIME_END = PropertiesUtils.getProperty("suffix.bean.query.time.end");
@@ -55,10 +59,12 @@ public class Constants {
         PATH_QUERY = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.query").replace('.', '/');
         PATH_UTILS = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.utils").replace('.', '/');
         PATH_ENUMS = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.enums").replace('.', '/');
+        PATH_MAPPER = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.mappers").replace('.', '/');
         PACKAGE_PO = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.po");
         PACKAGE_QUERY = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.query");
         PACKAGE_UTILS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.utils");
         PACKAGE_ENUMS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.enums");
+        PACKAGE_MAPPER = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.mappers");
     }
 
     public final static String[] SQL_DATE_TIME_TYPE = new String[]{"datetime", "timestamp"};
