@@ -35,6 +35,8 @@ public class BuildPo {
                 bw.write("import java.util.Date;\n");
                 bw.write(Constants.BEAN_DATE_FORMAT_CLASS+";\n");
                 bw.write(Constants.BEAN_DATE_UNFORMAT_CLASS+";\n");
+                bw.write("import "+Constants.PACKAGE_ENUMS+".DateTimePatternEnum;\n");
+                bw.write("import "+Constants.PACKAGE_UTILS+".DateUtils;\n");
             }
             //  忽略属性
             Boolean haveIgnoreBean = false;
@@ -93,10 +95,17 @@ public class BuildPo {
             Integer index = 0;
             for (FieldInfo field: tableInfo.getFieldList()){
                 String tempField = field.getComment();
+                String propertyName = field.getPropertyName();
                 if (field.getComment()==null || field.getComment().equals("")) {
                     tempField = field.getPropertyName();
                 }
-                toString.append(tempField+":\"+("+field.getPropertyName()+"== null?\"空\" : " +field.getPropertyName()+")");
+                if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPE,field.getSqlType())) {
+                    propertyName = "DateUtils.format("+propertyName+", DateTimePatternEnum.YYYY_MM_DD_HH_MM_SS.getPattern())";
+                }else if(ArrayUtils.contains(Constants.SQL_DATE_TYPE,field.getSqlType())) {
+                    propertyName = "DateUtils.format("+propertyName+", DateTimePatternEnum.YYYY_MM_DD.getPattern())";
+
+                }
+                toString.append(tempField+":\"+("+field.getPropertyName()+"== null?\"空\" : " +propertyName+")");
 
                 if (index < tableInfo.getFieldList().size() - 1) {
                     index ++;

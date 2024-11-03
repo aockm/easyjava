@@ -19,8 +19,13 @@ public class Constants {
     public static String PATH_JAVA = "java";
     public static String PATH_RESOURCES = "resources";
     public static String PACKAGE_BASE;
-    public static String PATH_PO;
     public static String PACKAGE_PO;
+    public static String PACKAGE_UTILS;
+    public static String PACKAGE_ENUMS;
+    public static String PATH_PO;
+    public static String PATH_UTILS;
+    public static String PATH_ENUMS;
+
 
     static {
 
@@ -40,7 +45,11 @@ public class Constants {
         PATH_BASE = PATH_BASE.replace('.', '/');
 
         PATH_PO = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.po").replace('.', '/');
+        PATH_UTILS = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.utils").replace('.', '/');
+        PATH_ENUMS = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.enums").replace('.', '/');
         PACKAGE_PO = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.po");
+        PACKAGE_UTILS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.utils");
+        PACKAGE_ENUMS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.enums");
     }
 
     public final static String[] SQL_DATE_TIME_TYPE = new String[]{"datetime", "timestamp"};
