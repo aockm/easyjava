@@ -58,7 +58,7 @@ public class BuildTable {
                 beanName = processField(beanName,true);
                 tableInfo.setBeanName(beanName);
                 tableInfo.setComment(comment);
-                tableInfo.setBeanParamName(beanName + Constants.SUFFIX_BEAN_PARAM);
+                tableInfo.setBeanParamName(beanName + Constants.SUFFIX_BEAN_QUERY);
 
                 readFieldInfo(tableInfo);
 

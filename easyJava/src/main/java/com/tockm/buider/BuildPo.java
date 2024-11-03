@@ -86,11 +86,13 @@ public class BuildPo {
                 bw.write("\tpublic void set"+tempField+"("+field.getJavaType()+" "+field.getPropertyName()+"){\n");
                 bw.write("\t\tthis."+field.getPropertyName()+" = "+field.getPropertyName()+";\n");
                 bw.write("\t}\n");
+                bw.newLine();
                 bw.write("\tpublic "+field.getJavaType()+ " get"+tempField+"(){\n");
                 bw.write("\t\treturn this."+field.getPropertyName()+";\n");
                 bw.write("\t}\n");
+                bw.newLine();
             }
-            // 重写tostring
+            // 重写toString
             StringBuffer toString = new StringBuffer();
             Integer index = 0;
             for (FieldInfo field: tableInfo.getFieldList()){
@@ -115,7 +117,6 @@ public class BuildPo {
             String toStringStr = toString.toString();
             toStringStr = "\""+toStringStr;
 
-            System.out.println(toString);
             bw.write("\t@Override\n");
             bw.write("\tpublic String toString() {\n");
             bw.write("\t\treturn "+toStringStr+";\n");
