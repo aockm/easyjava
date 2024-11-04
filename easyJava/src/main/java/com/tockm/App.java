@@ -19,6 +19,7 @@ public class App
             BuildPo.execute(table);
             BuildQuery.execute(table);
             BuildMapper.execute(table);
+            BuildMapperXml.execute(table);
 
         }
 

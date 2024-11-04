@@ -19,19 +19,21 @@ public class Constants {
     public static String SUFFIX_BEAN_QUERY_TIME_START;
     public static String SUFFIX_BEAN_QUERY_TIME_END;
     public static String PATH_BASE;
-    public static String PATH_JAVA = "java";
-    public static String PATH_RESOURCES = "resources";
+    public static String PATH_JAVA_NAME = "java";
+    public static String PATH_RESOURCES_NAME = "resources";
     public static String PACKAGE_BASE;
     public static String PACKAGE_PO;
     public static String PACKAGE_QUERY;
     public static String PACKAGE_UTILS;
     public static String PACKAGE_MAPPER;
     public static String PACKAGE_ENUMS;
+    public static String PATH_JAVA;
     public static String PATH_PO;
     public static String PATH_QUERY;
     public static String PATH_UTILS;
     public static String PATH_ENUMS;
     public static String PATH_MAPPER;
+    public static String PATH_MAPPER_XML;
 
 
     static {
@@ -52,19 +54,23 @@ public class Constants {
         PATH_BASE = PropertiesUtils.getProperty("path.base");
 
         PACKAGE_BASE = PropertiesUtils.getProperty("package.base");
-        PATH_BASE = PATH_BASE + "/"+ PATH_JAVA +"/" + PropertiesUtils.getProperty("package.base");
-        PATH_BASE = PATH_BASE.replace('.', '/');
+        PATH_JAVA = PATH_BASE + "/"+ PATH_JAVA_NAME +"/" + PropertiesUtils.getProperty("package.base");
+        PATH_JAVA = PATH_JAVA.replace('.', '/');
 
-        PATH_PO = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.po").replace('.', '/');
-        PATH_QUERY = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.query").replace('.', '/');
-        PATH_UTILS = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.utils").replace('.', '/');
-        PATH_ENUMS = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.enums").replace('.', '/');
-        PATH_MAPPER = PATH_BASE + "/"+ PropertiesUtils.getProperty("package.mappers").replace('.', '/');
+
+        PATH_PO = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.po").replace('.', '/');
+        PATH_QUERY = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.query").replace('.', '/');
+        PATH_UTILS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.utils").replace('.', '/');
+        PATH_ENUMS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.enums").replace('.', '/');
+        PATH_MAPPER = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.mappers").replace('.', '/');
         PACKAGE_PO = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.po");
         PACKAGE_QUERY = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.query");
         PACKAGE_UTILS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.utils");
         PACKAGE_ENUMS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.enums");
         PACKAGE_MAPPER = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.mappers");
+
+        PATH_MAPPER_XML = PropertiesUtils.getProperty("path.base")+"/"+PATH_RESOURCES_NAME+"/"+PACKAGE_MAPPER.replace(".","/");
+        PATH_MAPPER_XML = PATH_MAPPER_XML.replace('.', '/');
     }
 
     public final static String[] SQL_DATE_TIME_TYPE = new String[]{"datetime", "timestamp"};
