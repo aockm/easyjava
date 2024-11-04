@@ -62,7 +62,7 @@ public class BuildTable {
 
                 readFieldInfo(tableInfo);
 
-                getKeyIndexInfo(tableInfo);
+//                getKeyIndexInfo(tableInfo);
 
                 tableInfoList.add(tableInfo);
 

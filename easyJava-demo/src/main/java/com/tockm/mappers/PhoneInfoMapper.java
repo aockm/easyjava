@@ -9,18 +9,18 @@ import org.apache.ibatis.annotations.Param;
 public interface PhoneInfoMapper<T,P> extends BaseMapper {
 
 	/**
-	 * 根据IdAndId查询
+	 * 根据Id查询
 	 */
-	T selectByIdAndId(@Param("id") Integer id, @Param("id") Integer id);
+	T selectById(@Param("id") Integer id);
 
 	/**
-	 * 根据IdAndId更新
+	 * 根据Id更新
 	 */
-	Integer updateByIdAndId();
+	Integer updateById(@Param("bean") T t, @Param("id") Integer id);
 
 	/**
-	 * 根据IdAndId删除
+	 * 根据Id删除
 	 */
-	Integer deleteByIdAndId();
+	Integer deleteById(@Param("id") Integer id);
 
 }

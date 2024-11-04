@@ -59,11 +59,11 @@ public class BuildMapper {
 
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
-                bw.write("\tInteger updateBy"+methodName+"();\n");
+                bw.write("\tInteger updateBy"+methodName+"(@Param(\"bean\") T t, "+methodParam+");\n");
 
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
-                bw.write("\tInteger deleteBy"+methodName+"();\n");
+                bw.write("\tInteger deleteBy"+methodName+"("+methodParam+");\n");
             }
             bw.newLine();
             bw.write("}");
