@@ -15,6 +15,9 @@ public class TableInfo {
 
     private List<FieldInfo> fieldList;
 
+    // 扩展字段信息
+    private List<FieldInfo> fieldExtendList;
+
     private Map<String, List<FieldInfo>> keyIndexMap = new LinkedHashMap();
 
     private Boolean haveDate;
@@ -93,5 +96,13 @@ public class TableInfo {
 
     public void setHaveBigDecimal(Boolean haveBigDecimal) {
         this.haveBigDecimal = haveBigDecimal;
+    }
+
+    public List<FieldInfo> getFieldExtendList() {
+        return fieldExtendList;
+    }
+
+    public void setFieldExtendList(List<FieldInfo> fieldExtendList) {
+        this.fieldExtendList = fieldExtendList;
     }
 }

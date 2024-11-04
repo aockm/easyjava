@@ -59,10 +59,6 @@ public class BuildQuery {
                     String properName = field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_FUZZY;
                     bw.write("\tprivate " + field.getJavaType()+" " +properName+";\n");
                     bw.newLine();
-                    FieldInfo extendField = new FieldInfo();
-                    extendField.setJavaType(field.getJavaType());
-                    extendField.setPropertyName(properName);
-                    extendList.add(extendField);
                 }
                 if(ArrayUtils.contains(Constants.SQL_DATE_TYPE,field.getSqlType())||ArrayUtils.contains(Constants.SQL_DATE_TYPE,field.getSqlType())){
                     String properStartName = field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_START;
@@ -71,23 +67,11 @@ public class BuildQuery {
                     bw.newLine();
                     bw.write("\tprivate String " + properEndName+";\n");
                     bw.newLine();
-
-                    FieldInfo timeStartField = new FieldInfo();
-                    timeStartField.setJavaType("String");
-                    timeStartField.setPropertyName(properStartName);
-                    extendList.add(timeStartField);
-
-                    FieldInfo timeEndField = new FieldInfo();
-                    timeEndField.setJavaType("String");
-                    timeEndField.setPropertyName(properEndName);
-                    extendList.add(timeEndField);
                 }
             }
             bw.newLine();
-            List<FieldInfo> extendFieldList = tableInfo.getFieldList();
-            buildGetSet(bw, extendFieldList);
-            buildGetSet(bw, extendList);
-
+            buildGetSet(bw, tableInfo.getFieldList());
+            buildGetSet(bw, tableInfo.getFieldExtendList());
 
             bw.write("}");
             bw.flush();

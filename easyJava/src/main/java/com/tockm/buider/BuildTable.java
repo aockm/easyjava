@@ -99,6 +99,7 @@ public class BuildTable {
         PreparedStatement preparedStatement = null;
         ResultSet fieldResult = null;
         List<FieldInfo> fieldInfoList = new ArrayList();
+        List<FieldInfo> fieldExtend = new ArrayList();
         try {
             preparedStatement = connection.prepareStatement(String.format(SQL_SHOW_TABLES_FIELDS, tableInfo.getTableName()));
             fieldResult = preparedStatement.executeQuery();
@@ -113,8 +114,9 @@ public class BuildTable {
                 if (type.indexOf("(") > 0) {
                     type = type.substring(0, type.indexOf("("));
                 }
-                String propertyName = processField(field,false);
+                String propertyName = processField(field, false);
                 FieldInfo fieldInfo = new FieldInfo();
+
                 fieldInfoList.add(fieldInfo);
 
                 fieldInfo.setFieldName(field);
@@ -122,23 +124,53 @@ public class BuildTable {
                 fieldInfo.setSqlType(type);
                 fieldInfo.setPropertyName(propertyName);
                 fieldInfo.setJavaType(processJavaType(type));
-                fieldInfo.setAutoIncrement("auto_increment".equalsIgnoreCase(extra)?true:false);
+                fieldInfo.setAutoIncrement("auto_increment".equalsIgnoreCase(extra) ? true : false);
 
-                if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPE, type)){
+                if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPE, type)) {
                     haveDateTime = true;
                 }
-                if (ArrayUtils.contains(Constants.SQL_DATE_TYPE, type)){
+                if (ArrayUtils.contains(Constants.SQL_DATE_TYPE, type)) {
                     haveDate = true;
                 }
-                if (ArrayUtils.contains(Constants.SQL_DECIMAL_TYPE, type)){
-                   haveBigDecimal = true;
+                if (ArrayUtils.contains(Constants.SQL_DECIMAL_TYPE, type)) {
+                    haveBigDecimal = true;
+                }
+
+                if (ArrayUtils.contains(Constants.SQL_STRING_TYPE, type)) {
+                    String properName = fieldInfo.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_FUZZY;
+                    FieldInfo extendField = new FieldInfo();
+                    extendField.setJavaType(fieldInfo.getJavaType());
+                    extendField.setFieldName(fieldInfo.getFieldName());
+                    extendField.setPropertyName(properName);
+                    fieldExtend.add(extendField);
+                }
+                if (ArrayUtils.contains(Constants.SQL_DATE_TYPE, type) || ArrayUtils.contains(Constants.SQL_DATE_TYPE, type)) {
+                    String properStartName = fieldInfo.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_START;
+                    String properEndName = fieldInfo.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_END;
+
+                    FieldInfo timeStartField = new FieldInfo();
+                    timeStartField.setJavaType("String");
+                    timeStartField.setFieldName(fieldInfo.getFieldName());
+                    timeStartField.setPropertyName(properStartName);
+                    fieldExtend.add(timeStartField);
+
+                    FieldInfo timeEndField = new FieldInfo();
+                    timeEndField.setJavaType("String");
+                    timeStartField.setFieldName(fieldInfo.getFieldName());
+                    timeEndField.setPropertyName(properEndName);
+                    fieldExtend.add(timeEndField);
                 }
             }
+
+
             tableInfo.setHaveDateTime(haveDateTime);
             tableInfo.setHaveDate(haveDate);
             tableInfo.setHaveBigDecimal(haveBigDecimal);
             tableInfo.setFieldList(fieldInfoList);
+            tableInfo.setFieldExtendList(fieldExtend);
             getKeyIndexInfo(tableInfo);
+
+
 
             logger.info("tableInfo:{}", JsonUtils.convertObject2Json(tableInfo));
         }catch (Exception e) {
