@@ -85,18 +85,9 @@ public class BuildQuery {
             }
             bw.newLine();
             List<FieldInfo> extendFieldList = tableInfo.getFieldList();
-            extendFieldList.addAll(extendList);
-            for(FieldInfo field: extendFieldList){
-                String tempField = StringUtils.upperCaseFirstLetter(field.getPropertyName());
-                bw.write("\tpublic void set"+tempField+"("+field.getJavaType()+" "+field.getPropertyName()+"){\n");
-                bw.write("\t\tthis."+field.getPropertyName()+" = "+field.getPropertyName()+";\n");
-                bw.write("\t}\n");
-                bw.newLine();
-                bw.write("\tpublic "+field.getJavaType()+ " get"+tempField+"(){\n");
-                bw.write("\t\treturn this."+field.getPropertyName()+";\n");
-                bw.write("\t}\n");
-                bw.newLine();
-            }
+            buildGetSet(bw, extendFieldList);
+            buildGetSet(bw, extendList);
+
 
             bw.write("}");
             bw.flush();
@@ -106,6 +97,20 @@ public class BuildQuery {
             if (bw != null) {try {bw.close();} catch (IOException e) {e.printStackTrace();}}
             if (osw != null) {try {osw.close();} catch (IOException e) {e.printStackTrace();}}
             if (out != null) {try {out.close();} catch (IOException e) {e.printStackTrace();}}
+        }
+    }
+
+    private static void buildGetSet(BufferedWriter bw, List<FieldInfo> extendFieldList) throws IOException {
+        for(FieldInfo field: extendFieldList){
+            String tempField = StringUtils.upperCaseFirstLetter(field.getPropertyName());
+            bw.write("\tpublic void set"+tempField+"("+field.getJavaType()+" "+field.getPropertyName()+"){\n");
+            bw.write("\t\tthis."+field.getPropertyName()+" = "+field.getPropertyName()+";\n");
+            bw.write("\t}\n");
+            bw.newLine();
+            bw.write("\tpublic "+field.getJavaType()+ " get"+tempField+"(){\n");
+            bw.write("\t\treturn this."+field.getPropertyName()+";\n");
+            bw.write("\t}\n");
+            bw.newLine();
         }
     }
 }

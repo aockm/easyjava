@@ -30,10 +30,39 @@ public class BuildMapperXml {
             osw = new OutputStreamWriter(out, "UTF-8");
             bw = new BufferedWriter(osw);
 
-
+            String packageName = Constants.PACKAGE_MAPPER+"."+className;
+            String poName = Constants.PACKAGE_PO+"."+tableInfo.getBeanName();
             bw.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
             bw.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n");
-            bw.write("<mapper namespace=\""+Constants.PACKAGE_MAPPER+"."+className+"\">\n");
+            bw.write("<mapper namespace=\""+packageName+"\">\n");
+            bw.write("\t<!--实体类映射-->\n");
+            bw.write("\t<resultMap id=\"base_result_map\" type=\""+poName+"\">\n");
+
+            FieldInfo idField = new FieldInfo();
+            Map<String, List<FieldInfo>> keyIndexMap = tableInfo.getKeyIndexMap();
+            for (Map.Entry<String, List<FieldInfo>> entry : keyIndexMap.entrySet()) {
+                if (entry.getKey().equals("PRIMARY")) {
+                    List<FieldInfo> fieldInfos = entry.getValue();
+                    if (fieldInfos.size() == 1) {
+                        idField = fieldInfos.get(0);
+                        break;
+                    }
+                }
+            }
+
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                String key = "";
+
+                bw.write("\t\t<!--"+field.getComment()+"-->\n");
+                if (idField != null && field.getPropertyName().equals(idField.getPropertyName())) {
+                    key = "id";
+                }else {
+                    key = "result";
+                }
+                bw.write("\t\t<"+key+" column=\""+field.getPropertyName()+"\" property=\""+field.getPropertyName()+"\"/>\n");
+            }
+            bw.write("\t</resultMap>\n");
+
             bw.write("</mapper>\n");
             bw.newLine();
 
