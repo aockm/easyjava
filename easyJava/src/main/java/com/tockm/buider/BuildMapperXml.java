@@ -3,7 +3,7 @@ package com.tockm.buider;
 import com.tockm.bean.Constants;
 import com.tockm.bean.FieldInfo;
 import com.tockm.bean.TableInfo;
-import com.tockm.utils.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,7 +62,37 @@ public class BuildMapperXml {
                 bw.write("\t\t<"+key+" column=\""+field.getPropertyName()+"\" property=\""+field.getPropertyName()+"\"/>\n");
             }
             bw.write("\t</resultMap>\n");
+            bw.newLine();
+            bw.write("\t<!--通用查询结果列-->\n");
+            bw.write("\t<sql id=\"base_column_list\" >\n");
+            StringBuilder columns = new StringBuilder();
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                columns.append(field.getFieldName()).append(",");
+            }
+            String columnBuild = columns.substring(0,columns.lastIndexOf(","));
+            bw.write("\t\t"+columnBuild+"\n");
+            bw.write("\t</sql>\n\n");
 
+            bw.write("\t<!--基础查询条件-->\n");
+            bw.write("\t<sql id=\"base_query_condition\" >\n");
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                String strQuery = "";
+                if (ArrayUtils.contains(Constants.SQL_STRING_TYPE,field.getSqlType())) {
+                    strQuery = " and query." + field.getPropertyName() + "!='' ";
+                }
+                bw.write("\t\t<if test=\"query."+field.getPropertyName()+"!=null"+strQuery+"\">\n");
+                bw.write("\t\t\tand id = #{query."+field.getPropertyName()+"}\n");
+                bw.write("\t\t</if>\n");
+            }
+            bw.write("\t</sql>\n\n");
+
+            bw.write("\t<!--通用条件列-->\n");
+            bw.write("\t<sql id=\"base_condition\" >\n");
+            bw.write("\t</sql>\n\n");
+
+            bw.write("\t<!--通用查询条件列-->\n");
+            bw.write("\t<sql id=\"query_condition\" >\n");
+            bw.write("\t</sql>\n\n");
             bw.write("</mapper>\n");
             bw.newLine();
 

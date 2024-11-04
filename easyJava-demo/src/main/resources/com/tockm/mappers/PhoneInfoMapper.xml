@@ -22,5 +22,50 @@
 		<!---->
 		<result column="createDate" property="createDate"/>
 	</resultMap>
+
+	<!--通用查询结果列-->
+	<sql id="base_column_list" >
+		id,phone,province,city,sp,name,sex,create_time,create_date
+	</sql>
+
+	<!--基础查询条件-->
+	<sql id="base_query_condition" >
+		<if test="query.id!=null">
+			and id = #{query.id}
+		</if>
+		<if test="query.phone!=null and query.phone!='' ">
+			and id = #{query.phone}
+		</if>
+		<if test="query.province!=null and query.province!='' ">
+			and id = #{query.province}
+		</if>
+		<if test="query.city!=null and query.city!='' ">
+			and id = #{query.city}
+		</if>
+		<if test="query.sp!=null and query.sp!='' ">
+			and id = #{query.sp}
+		</if>
+		<if test="query.name!=null and query.name!='' ">
+			and id = #{query.name}
+		</if>
+		<if test="query.sex!=null and query.sex!='' ">
+			and id = #{query.sex}
+		</if>
+		<if test="query.createTime!=null">
+			and id = #{query.createTime}
+		</if>
+		<if test="query.createDate!=null">
+			and id = #{query.createDate}
+		</if>
+	</sql>
+
+	<!--通用条件列-->
+	<sql id="base_condition" >
+	</sql>
+
+	<!--通用查询条件列-->
+	<sql id="query_condition" >
+	</sql>
+
 </mapper>
 
