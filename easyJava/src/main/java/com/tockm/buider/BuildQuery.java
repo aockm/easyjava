@@ -42,7 +42,7 @@ public class BuildQuery {
             bw.newLine();
             bw.newLine();
             BuildComment.createClassComment(bw,tableInfo.getComment()+"查询");
-            bw.write("public class "+className+" {");
+            bw.write("public class "+className+" extends BaseQuery {");
             bw.newLine();
             List<FieldInfo> extendList = new ArrayList();
 

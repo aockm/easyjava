@@ -25,6 +25,23 @@ public class BuildBase {
         headerInfoList.clear();
         headerInfoList.add("package "+Constants.PACKAGE_MAPPER+";");
         build(headerInfoList,"BaseMapper", Constants.PATH_MAPPER);
+
+        // 生成pageSize枚举
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_ENUMS+";");
+
+        build(headerInfoList,"PageSize", Constants.PATH_ENUMS);
+
+        // 生成分页
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_QUERY+";");
+        headerInfoList.add("import "+Constants.PACKAGE_ENUMS+".PageSize;");
+        build(headerInfoList,"SimplePage", Constants.PATH_QUERY);
+        // 生成查询参数
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_QUERY+";");
+        build(headerInfoList,"BaseQuery", Constants.PATH_QUERY);
+
     }
 
     public static void build(List<String> headerInfo, String fileName, String outPutPath) {
@@ -52,8 +69,6 @@ public class BuildBase {
                 bw.write(header);
                 bw.newLine();
                 if (header.contains("package")){ bw.newLine();}
-
-
             }
             String line = null;
             while((line=br.readLine())!=null){

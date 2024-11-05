@@ -14,6 +14,9 @@ import java.util.Map;
 public class BuildMapperXml {
     public static final Logger logger = LoggerFactory.getLogger(BuildMapper.class);
 
+    private static final String QUERY_CONDITION = "query_condition";
+    private static final String BASE_COLUMN_LIST = "base_column_list";
+    private static final String BASE_RESULT_MAP = "base_result_map";
     public static void execute(TableInfo tableInfo) {
         File folder = new File(Constants.PATH_MAPPER_XML);
         if (!folder.exists()) {
@@ -36,7 +39,7 @@ public class BuildMapperXml {
             bw.write("<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n");
             bw.write("<mapper namespace=\""+packageName+"\">\n");
             bw.write("\t<!--实体类映射-->\n");
-            bw.write("\t<resultMap id=\"base_result_map\" type=\""+poName+"\">\n");
+            bw.write("\t<resultMap id=\""+BASE_RESULT_MAP+"\" type=\""+poName+"\">\n");
 
             FieldInfo idField = new FieldInfo();
             Map<String, List<FieldInfo>> keyIndexMap = tableInfo.getKeyIndexMap();
@@ -64,7 +67,7 @@ public class BuildMapperXml {
             bw.write("\t</resultMap>\n");
             bw.newLine();
             bw.write("\t<!--通用查询结果列-->\n");
-            bw.write("\t<sql id=\"base_column_list\" >\n");
+            bw.write("\t<sql id=\""+BASE_COLUMN_LIST+"\" >\n");
             StringBuilder columns = new StringBuilder();
             for (FieldInfo field:tableInfo.getFieldList()) {
                 columns.append(field.getFieldName()).append(",");
@@ -107,12 +110,28 @@ public class BuildMapperXml {
             bw.write("\t</sql>\n\n");
 
             bw.write("\t<!--扩展的查询条件-->\n");
-            bw.write("\t<sql id=\"query_condition\" >\n");
+            bw.write("\t<sql id=\""+QUERY_CONDITION+"\" >\n");
             bw.write("\t\t<where>\n");
             bw.write("\t\t\t<include refid=\"base_query_condition\" />\n");
             bw.write("\t\t\t<include refid=\"query_condition_extend\" />\n");
             bw.write("\t\t</where>\n\n");
             bw.write("\t</sql>\n\n");
+            //  查询集合
+            bw.write("\t<!--查询集合-->\n");
+            bw.write("\t<select id=\"selectList\" resultMap=\""+BASE_RESULT_MAP+"\">\n");
+            bw.write("\t\tSELECT <include refid=\""+BASE_COLUMN_LIST+"\"/> FROM "+tableInfo.getTableName()+"\n");
+            bw.write("\t\t<include refid=\""+QUERY_CONDITION+"\"/>\n");
+            bw.write("\t\t<if test=\"query.orderBy!=null\">order by ${query.orderBy}</if>\n");
+            bw.write("\t\t<if test=\"query.simplePage!=null\">limit #{query.simplePage.start}, #{query.simplePage.end}</if>\n");
+            bw.write("\t</select>\n\n");
+
+            //  查询数量
+            bw.write("\t<!--查询集合-->\n");
+            bw.write("\t<select id=\"selectCount\" resultMap=\"java.lang.Integer\">\n");
+            bw.write("\t\tSELECT count(1) FROM "+tableInfo.getTableName()+"\n");
+            bw.write("\t\t<include refid=\""+QUERY_CONDITION+"\"/>\n");
+            bw.write("\t</select>\n\n");
+
 
             bw.write("</mapper>\n");
             bw.newLine();
