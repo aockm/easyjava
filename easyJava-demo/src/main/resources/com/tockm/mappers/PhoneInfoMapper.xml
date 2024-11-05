@@ -34,37 +34,66 @@
 			and id = #{query.id}
 		</if>
 		<if test="query.phone!=null and query.phone!='' ">
-			and id = #{query.phone}
+			and phone = #{query.phone}
 		</if>
 		<if test="query.province!=null and query.province!='' ">
-			and id = #{query.province}
+			and province = #{query.province}
 		</if>
 		<if test="query.city!=null and query.city!='' ">
-			and id = #{query.city}
+			and city = #{query.city}
 		</if>
 		<if test="query.sp!=null and query.sp!='' ">
-			and id = #{query.sp}
+			and sp = #{query.sp}
 		</if>
 		<if test="query.name!=null and query.name!='' ">
-			and id = #{query.name}
+			and name = #{query.name}
 		</if>
 		<if test="query.sex!=null and query.sex!='' ">
-			and id = #{query.sex}
+			and sex = #{query.sex}
 		</if>
 		<if test="query.createTime!=null">
-			and id = #{query.createTime}
+			and create_time = #{query.createTime}
 		</if>
 		<if test="query.createDate!=null">
-			and id = #{query.createDate}
+			and create_date = #{query.createDate}
 		</if>
 	</sql>
 
-	<!--通用条件列-->
-	<sql id="base_condition" >
+	<!--扩展查询条件列-->
+	<sql id="query_condition_extend" >
+		<if test="query.phoneFuzzy!=null and query.phoneFuzzy!='' ">
+			 and phone like concat ('%',#{query.phoneFuzzy}, '%')
+		</if>
+		<if test="query.provinceFuzzy!=null and query.provinceFuzzy!='' ">
+			 and province like concat ('%',#{query.provinceFuzzy}, '%')
+		</if>
+		<if test="query.cityFuzzy!=null and query.cityFuzzy!='' ">
+			 and city like concat ('%',#{query.cityFuzzy}, '%')
+		</if>
+		<if test="query.spFuzzy!=null and query.spFuzzy!='' ">
+			 and sp like concat ('%',#{query.spFuzzy}, '%')
+		</if>
+		<if test="query.nameFuzzy!=null and query.nameFuzzy!='' ">
+			 and name like concat ('%',#{query.nameFuzzy}, '%')
+		</if>
+		<if test="query.sexFuzzy!=null and query.sexFuzzy!='' ">
+			 and sex like concat ('%',#{query.sexFuzzy}, '%')
+		</if>
+		<if test="query.createDateStart!=null and query.createDateStart!='' ">
+			<![CDATA[ and create_date >= str_to_date(#{query.createDateStart}, '%Y-%m-%d')]]>
+		</if>
+		<if test="query.createDateEnd!=null and query.createDateEnd!='' ">
+			<![CDATA[ and null < date_sub(str_to_date(#{query.createDateEnd},' %Y-%m-%d'), interval - 1 day)]]>
+		</if>
 	</sql>
 
-	<!--通用查询条件列-->
+	<!--扩展的查询条件-->
 	<sql id="query_condition" >
+		<where>
+			<include refid="base_query_condition" />
+			<include refid="query_condition_extend" />
+		</where>
+
 	</sql>
 
 </mapper>

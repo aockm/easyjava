@@ -141,6 +141,7 @@ public class BuildTable {
                     FieldInfo extendField = new FieldInfo();
                     extendField.setJavaType(fieldInfo.getJavaType());
                     extendField.setFieldName(fieldInfo.getFieldName());
+                    extendField.setSqlType(type);
                     extendField.setPropertyName(properName);
                     fieldExtend.add(extendField);
                 }
@@ -150,12 +151,14 @@ public class BuildTable {
 
                     FieldInfo timeStartField = new FieldInfo();
                     timeStartField.setJavaType("String");
+                    timeStartField.setSqlType(type);
                     timeStartField.setFieldName(fieldInfo.getFieldName());
                     timeStartField.setPropertyName(properStartName);
                     fieldExtend.add(timeStartField);
 
                     FieldInfo timeEndField = new FieldInfo();
                     timeEndField.setJavaType("String");
+                    timeEndField.setSqlType(type);
                     timeStartField.setFieldName(fieldInfo.getFieldName());
                     timeEndField.setPropertyName(properEndName);
                     fieldExtend.add(timeEndField);

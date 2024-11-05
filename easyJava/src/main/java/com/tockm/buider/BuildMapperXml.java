@@ -81,18 +81,39 @@ public class BuildMapperXml {
                     strQuery = " and query." + field.getPropertyName() + "!='' ";
                 }
                 bw.write("\t\t<if test=\"query."+field.getPropertyName()+"!=null"+strQuery+"\">\n");
-                bw.write("\t\t\tand id = #{query."+field.getPropertyName()+"}\n");
+                bw.write("\t\t\tand "+field.getFieldName()+" = #{query."+field.getPropertyName()+"}\n");
                 bw.write("\t\t</if>\n");
             }
             bw.write("\t</sql>\n\n");
 
-            bw.write("\t<!--通用条件列-->\n");
-            bw.write("\t<sql id=\"base_condition\" >\n");
+            bw.write("\t<!--扩展查询条件列-->\n");
+            bw.write("\t<sql id=\"query_condition_extend\" >\n");
+            for (FieldInfo field:tableInfo.getFieldExtendList()) {
+                String andWhere = "";
+                if (ArrayUtils.contains(Constants.SQL_STRING_TYPE,field.getSqlType())) {
+                    andWhere = " and " + field.getFieldName() + " like concat ('%',#{query."+field.getPropertyName()+"}, '%')";
+                }else if (ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPE,field.getSqlType())||ArrayUtils.contains(Constants.SQL_DATE_TYPE,field.getSqlType())) {
+                    if (field.getPropertyName().endsWith(Constants.SUFFIX_BEAN_QUERY_TIME_START)) {
+                        andWhere = "<![CDATA[ and "+field.getFieldName()+" >= str_to_date(#{query."+field.getPropertyName()+"}, '%Y-%m-%d')]]>";
+
+                    }else if (field.getPropertyName().endsWith(Constants.SUFFIX_BEAN_QUERY_TIME_END)) {
+                        andWhere = "<![CDATA[ and "+field.getFieldName()+" < date_sub(str_to_date(#{query."+field.getPropertyName()+"},' %Y-%m-%d'), interval - 1 day)]]>";
+                    }
+                }
+                bw.write("\t\t<if test=\"query."+field.getPropertyName()+"!=null and query." + field.getPropertyName() + "!='' \">\n");
+                bw.write("\t\t\t"+andWhere+"\n");
+                bw.write("\t\t</if>\n");
+            }
             bw.write("\t</sql>\n\n");
 
-            bw.write("\t<!--通用查询条件列-->\n");
+            bw.write("\t<!--扩展的查询条件-->\n");
             bw.write("\t<sql id=\"query_condition\" >\n");
+            bw.write("\t\t<where>\n");
+            bw.write("\t\t\t<include refid=\"base_query_condition\" />\n");
+            bw.write("\t\t\t<include refid=\"query_condition_extend\" />\n");
+            bw.write("\t\t</where>\n\n");
             bw.write("\t</sql>\n\n");
+
             bw.write("</mapper>\n");
             bw.newLine();
 
