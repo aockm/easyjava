@@ -105,7 +105,7 @@
 	</select>
 
 	<!--查询集合-->
-	<select id="selectCount" resultMap="java.lang.Integer">
+	<select id="selectCount" resultType="java.lang.Integer">
 		SELECT count(1) FROM tb_phone_info
 		<include refid="query_condition"/>
 	</select>

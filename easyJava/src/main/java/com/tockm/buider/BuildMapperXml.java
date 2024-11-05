@@ -127,7 +127,7 @@ public class BuildMapperXml {
 
             //  查询数量
             bw.write("\t<!--查询集合-->\n");
-            bw.write("\t<select id=\"selectCount\" resultMap=\"java.lang.Integer\">\n");
+            bw.write("\t<select id=\"selectCount\" resultType=\"java.lang.Integer\">\n");
             bw.write("\t\tSELECT count(1) FROM "+tableInfo.getTableName()+"\n");
             bw.write("\t\t<include refid=\""+QUERY_CONDITION+"\"/>\n");
             bw.write("\t</select>\n\n");
