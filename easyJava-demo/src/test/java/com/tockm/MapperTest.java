@@ -24,4 +24,14 @@ public class MapperTest {
         List<PhoneInfo> list = phoneInfoMapper.selectList(new PhoneInfoQuery());
         System.out.println(list.size());
     }
+
+    @Test
+    public void insert() {
+        PhoneInfo phoneInfo = new PhoneInfo();
+        phoneInfo.setPhone("1234567");
+        phoneInfo.setCity("美国");
+        phoneInfoMapper.insert(phoneInfo);
+        System.out.println(phoneInfo.getId());
+
+    }
 }

@@ -110,5 +110,71 @@
 		<include refid="query_condition"/>
 	</select>
 
+	<!--插入（匹配有值字段）-->
+	<insert id="insert" parameterType="com.tockm.entity.po.PhoneInfo">
+		<selectKey keyProperty="bean.id" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO tb_phone_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				id,
+			</if>
+			<if test="bean.phone!=null">
+				phone,
+			</if>
+			<if test="bean.province!=null">
+				province,
+			</if>
+			<if test="bean.city!=null">
+				city,
+			</if>
+			<if test="bean.sp!=null">
+				sp,
+			</if>
+			<if test="bean.name!=null">
+				name,
+			</if>
+			<if test="bean.sex!=null">
+				sex,
+			</if>
+			<if test="bean.createTime!=null">
+				create_time,
+			</if>
+			<if test="bean.createDate!=null">
+				create_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				#{bean.id},
+			</if>
+			<if test="bean.phone!=null">
+				#{bean.phone},
+			</if>
+			<if test="bean.province!=null">
+				#{bean.province},
+			</if>
+			<if test="bean.city!=null">
+				#{bean.city},
+			</if>
+			<if test="bean.sp!=null">
+				#{bean.sp},
+			</if>
+			<if test="bean.name!=null">
+				#{bean.name},
+			</if>
+			<if test="bean.sex!=null">
+				#{bean.sex},
+			</if>
+			<if test="bean.createTime!=null">
+				#{bean.createTime},
+			</if>
+			<if test="bean.createDate!=null">
+				#{bean.createDate},
+			</if>
+		</trim>
+	</insert>
+
 </mapper>
 

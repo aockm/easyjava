@@ -132,6 +132,40 @@ public class BuildMapperXml {
             bw.write("\t\t<include refid=\""+QUERY_CONDITION+"\"/>\n");
             bw.write("\t</select>\n\n");
 
+            // 插入（匹配有值字段）
+            FieldInfo autoIncrementField = null;
+            for(FieldInfo field:tableInfo.getFieldList()) {
+                if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {
+                    autoIncrementField = field;
+                    break;
+                }
+            }
+            bw.write("\t<!--插入（匹配有值字段）-->\n");
+            bw.write("\t<insert id=\"insert\" parameterType=\""+poName+"\">\n");
+            if (autoIncrementField!=null) {
+                bw.write("\t\t<selectKey keyProperty=\"bean."+autoIncrementField.getFieldName()+"\" resultType=\""+autoIncrementField.getJavaType()+"\" order=\"AFTER\">\n");
+                bw.write("\t\t\tSELECT LAST_INSERT_ID()\n");
+                bw.write("\t\t</selectKey>\n");
+            }
+
+            bw.write("\t\tINSERT INTO "+tableInfo.getTableName()+"\n");
+            bw.write("\t\t<trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">\n");
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                bw.write("\t\t\t<if test=\"bean."+field.getPropertyName()+"!=null\">\n");
+                bw.write("\t\t\t\t"+field.getFieldName()+",\n");
+                bw.write("\t\t\t</if>\n");
+            }
+            bw.write("\t\t</trim>\n");
+
+            bw.write("\t\t<trim prefix=\"values (\" suffix=\")\" suffixOverrides=\",\">\n");
+
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                bw.write("\t\t\t<if test=\"bean."+field.getPropertyName()+"!=null\">\n");
+                bw.write("\t\t\t\t#{bean."+field.getPropertyName()+"},\n");
+                bw.write("\t\t\t</if>\n");
+            }
+            bw.write("\t\t</trim>\n");
+            bw.write("\t</insert>\n\n");
 
             bw.write("</mapper>\n");
             bw.newLine();
