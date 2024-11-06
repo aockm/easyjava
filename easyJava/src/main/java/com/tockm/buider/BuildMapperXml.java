@@ -167,6 +167,39 @@ public class BuildMapperXml {
             bw.write("\t\t</trim>\n");
             bw.write("\t</insert>\n\n");
 
+            //插入或更新
+            bw.write("\t<!--插入或更新（匹配有值字段）-->\n");
+            bw.write("\t<insert id=\"insertOrUpdate\" parameterType=\""+poName+"\">\n");
+            bw.write("\t\tINSERT INTO "+tableInfo.getTableName()+"\n");
+            bw.write("\t\t<trim prefix=\"(\" suffix=\")\" suffixOverrides=\",\">\n");
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                bw.write("\t\t\t<if test=\"bean."+field.getPropertyName()+"!=null\">\n");
+                bw.write("\t\t\t\t"+field.getFieldName()+",\n");
+                bw.write("\t\t\t</if>\n");
+            }
+            bw.write("\t\t</trim>\n");
+            bw.write("\t\t<trim prefix=\"values (\" suffix=\")\" suffixOverrides=\",\">\n");
+
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                bw.write("\t\t\t<if test=\"bean."+field.getPropertyName()+"!=null\">\n");
+                bw.write("\t\t\t\t#{bean."+field.getPropertyName()+"},\n");
+                bw.write("\t\t\t</if>\n");
+            }
+            bw.write("\t\t</trim>\n");
+            bw.write("\t\ton DUPLICATE key update\n");
+
+            bw.write("\t\t<trim prefix=\"\" suffix=\"\" suffixOverrides=\",\">\n");
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                bw.write("\t\t\t<if test=\"bean."+field.getPropertyName()+"!=null\">\n");
+                bw.write("\t\t\t\t"+field.getFieldName()+" = VALUES("+field.getFieldName()+"),\n");
+                bw.write("\t\t\t</if>\n");
+            }
+            bw.write("\t\t</trim>\n");
+
+            bw.write("\t</insert>\n\n");
+
+
+
             bw.write("</mapper>\n");
             bw.newLine();
 

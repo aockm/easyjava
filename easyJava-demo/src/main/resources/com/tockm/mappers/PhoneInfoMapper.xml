@@ -176,5 +176,98 @@
 		</trim>
 	</insert>
 
+	<!--插入或更新（匹配有值字段）-->
+	<insert id="insertOrUpdate" parameterType="com.tockm.entity.po.PhoneInfo">
+		INSERT INTO tb_phone_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				id,
+			</if>
+			<if test="bean.phone!=null">
+				phone,
+			</if>
+			<if test="bean.province!=null">
+				province,
+			</if>
+			<if test="bean.city!=null">
+				city,
+			</if>
+			<if test="bean.sp!=null">
+				sp,
+			</if>
+			<if test="bean.name!=null">
+				name,
+			</if>
+			<if test="bean.sex!=null">
+				sex,
+			</if>
+			<if test="bean.createTime!=null">
+				create_time,
+			</if>
+			<if test="bean.createDate!=null">
+				create_date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				#{bean.id},
+			</if>
+			<if test="bean.phone!=null">
+				#{bean.phone},
+			</if>
+			<if test="bean.province!=null">
+				#{bean.province},
+			</if>
+			<if test="bean.city!=null">
+				#{bean.city},
+			</if>
+			<if test="bean.sp!=null">
+				#{bean.sp},
+			</if>
+			<if test="bean.name!=null">
+				#{bean.name},
+			</if>
+			<if test="bean.sex!=null">
+				#{bean.sex},
+			</if>
+			<if test="bean.createTime!=null">
+				#{bean.createTime},
+			</if>
+			<if test="bean.createDate!=null">
+				#{bean.createDate},
+			</if>
+		</trim>
+		on DUPLICATE key update
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.id!=null">
+				id = VALUES(id),
+			</if>
+			<if test="bean.phone!=null">
+				phone = VALUES(phone),
+			</if>
+			<if test="bean.province!=null">
+				province = VALUES(province),
+			</if>
+			<if test="bean.city!=null">
+				city = VALUES(city),
+			</if>
+			<if test="bean.sp!=null">
+				sp = VALUES(sp),
+			</if>
+			<if test="bean.name!=null">
+				name = VALUES(name),
+			</if>
+			<if test="bean.sex!=null">
+				sex = VALUES(sex),
+			</if>
+			<if test="bean.createTime!=null">
+				create_time = VALUES(create_time),
+			</if>
+			<if test="bean.createDate!=null">
+				create_date = VALUES(create_date),
+			</if>
+		</trim>
+	</insert>
+
 </mapper>
 

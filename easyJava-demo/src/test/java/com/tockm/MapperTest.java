@@ -1,7 +1,10 @@
 package com.tockm;
 
+import com.tockm.entity.po.NameInfo;
 import com.tockm.entity.po.PhoneInfo;
+import com.tockm.entity.query.NameInfoQuery;
 import com.tockm.entity.query.PhoneInfoQuery;
+import com.tockm.mappers.NameInfoMapper;
 import com.tockm.mappers.PhoneInfoMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,6 +23,9 @@ import java.util.List;
 public class MapperTest {
     @Resource
     private PhoneInfoMapper<PhoneInfo, PhoneInfoQuery> phoneInfoMapper;
+
+    @Resource
+    private NameInfoMapper<NameInfo, NameInfoQuery> nameInfoMapper;
     @Test
     public void selectList() {
         List<PhoneInfo> list = phoneInfoMapper.selectList(new PhoneInfoQuery());
@@ -33,5 +40,13 @@ public class MapperTest {
         phoneInfoMapper.insert(phoneInfo);
         System.out.println(phoneInfo.getId());
 
+    }
+    @Test
+    public void update() {
+        NameInfo nameInfo = new NameInfo();
+        nameInfo.setName("lll");
+        nameInfo.setCreateTime(new Date());
+        nameInfoMapper.insertOrUpdate(nameInfo);
+        System.out.println(nameInfo.getId());
     }
 }
