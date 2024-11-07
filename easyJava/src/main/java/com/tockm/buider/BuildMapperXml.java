@@ -3,6 +3,7 @@ package com.tockm.buider;
 import com.tockm.bean.Constants;
 import com.tockm.bean.FieldInfo;
 import com.tockm.bean.TableInfo;
+import com.tockm.utils.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BuildMapperXml {
-    public static final Logger logger = LoggerFactory.getLogger(BuildMapper.class);
+    public static final Logger logger = LoggerFactory.getLogger(BuildMapperXml.class);
 
     private static final String QUERY_CONDITION = "query_condition";
     private static final String BASE_COLUMN_LIST = "base_column_list";
@@ -223,8 +224,61 @@ public class BuildMapperXml {
             bw.write("\t<!-- 批量添加 修改（批量插入）-->\n");
             bw.write("\t<insert id=\"insertOrUpdateBatch\" parameterType=\""+poName+"\">\n");
             bw.write("\t\tINSERT INTO "+tableInfo.getTableName()+"("+fieldsStr+")values\n");
-
+            bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\" open=\"(\" close=\")\">\n");
+            bw.write("\t\t\t"+propertyNamesStr+"\n");
+            bw.write("\t\t</foreach>\n");
+            bw.write("\t\ton DUPLICATE key update\n");
+            Integer indexSize = 0;
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                indexSize ++;
+                if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
+                if (indexSize < tableInfo.getFieldList().size()-1) {
+                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getFieldName()+"),\n");
+                }else if (indexSize == tableInfo.getFieldList().size()-1){
+                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getFieldName()+")\n");
+                }
+            }
             bw.write("\t</insert>\n\n");
+
+            // 根据主键修改
+            bw.write("\t<!-- 根据主键修改 -->\n");
+
+            for (Map.Entry<String, List<FieldInfo>> entry : keyIndexMap.entrySet()) {
+                List<FieldInfo> keyFieldInfList = entry.getValue();
+                Integer index = 0;
+                StringBuffer methodName = new StringBuffer();
+                StringBuffer methodParam = new StringBuffer();
+
+                for (FieldInfo fieldInfo : keyFieldInfList) {
+                    index++;
+                    methodName.append(StringUtils.upperCaseFirstLetter(fieldInfo.getPropertyName()));
+                    methodParam.append(fieldInfo.getFieldName()+"=#{"+fieldInfo.getPropertyName()+"}");
+                    if (index < keyFieldInfList.size()) {
+                        methodName.append("And");
+                        methodParam.append(" and ");
+                    }
+                }
+
+                BuildComment.createFieldComment(bw,"根据"+methodName+"查询");
+                bw.write("\t<!-- 根据"+methodName+"查询 -->\n");
+                bw.write("\t<select id=\"selectBy"+methodName+"\" resultMap=\"base_result_map\">\n");
+                bw.write("\t\tselect <include refid=\"base_column_list\"/>\n");
+                bw.write("\t\tfrom "+tableInfo.getTableName()+"\n");
+                bw.write("\t\twhere "+methodParam+"\n");
+                bw.write("\t</select>\n\n");
+
+                BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
+                bw.write("\t<!-- 根据"+methodName+"更新 -->\n");
+                bw.write("\t<update id=\"updateBy"+methodName+"\" resultMap=\"base_result_map\">\n");
+                bw.write("\t</update>\n\n");
+
+                BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
+                bw.write("\t<!-- 根据"+methodName+"删除 -->\n");
+                bw.write("\t<delete id=\"deleteBy"+methodName+"\">\n");
+                bw.write("\t\tdelete from "+tableInfo.getTableName()+"\n");
+                bw.write("\t\twhere "+methodParam+"\n");
+                bw.write("\t</delete>\n\n");
+            }
             bw.write("</mapper>\n");
             bw.newLine();
 

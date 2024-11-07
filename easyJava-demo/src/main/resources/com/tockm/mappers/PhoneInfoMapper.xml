@@ -277,5 +277,48 @@
 		</foreach>
 	</insert>
 
+	<!-- 批量添加 修改（批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.tockm.entity.po.PhoneInfo">
+		INSERT INTO tb_phone_info(phone,province,city,sp,name,sex,create_time,create_date)values
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.phone},#{item.province},#{item.city},#{item.sp},#{item.name},#{item.sex},#{item.createTime},#{item.createDate}
+		</foreach>
+		on DUPLICATE key update
+		phone = VALUES(phone),
+		province = VALUES(province),
+		city = VALUES(city),
+		sp = VALUES(sp),
+		name = VALUES(name),
+		sex = VALUES(sex),
+		create_time = VALUES(create_time)
+	</insert>
+
+	<!-- 根据主键修改 -->
+	/**
+	 * 根据Id查询
+	 */
+	<!-- 根据Id查询 -->
+	<select id="selectById" resultMap="base_result_map">
+		select <include refid="base_column_list"/>
+		from tb_phone_info
+		where id=#{id}
+	</select>
+
+	/**
+	 * 根据Id更新
+	 */
+	<!-- 根据Id更新 -->
+	<update id="updateById" resultMap="base_result_map">
+	</update>
+
+	/**
+	 * 根据Id删除
+	 */
+	<!-- 根据Id删除 -->
+	<delete id="deleteById">
+		delete from tb_phone_info
+		where id=#{id}
+	</delete>
+
 </mapper>
 
