@@ -63,7 +63,7 @@ public class BuildMapperXml {
                 }else {
                     key = "result";
                 }
-                bw.write("\t\t<"+key+" column=\""+field.getPropertyName()+"\" property=\""+field.getPropertyName()+"\"/>\n");
+                bw.write("\t\t<"+key+" column=\""+field.getFieldName()+"\" property=\""+field.getPropertyName()+"\"/>\n");
             }
             bw.write("\t</resultMap>\n");
             bw.newLine();
@@ -208,14 +208,17 @@ public class BuildMapperXml {
             }
             String fieldsStr = fields.substring(0, fields.lastIndexOf(","));
             bw.write("\t\tINSERT INTO "+tableInfo.getTableName()+"("+fieldsStr+")values\n");
-            bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\" open=\"(\" close=\")\">\n");
+            bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\">\n");
             StringBuffer propertyNames = new StringBuffer();
+            bw.write("\t\t(\n");
             for (FieldInfo field:tableInfo.getFieldList()) {
                 if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
                 propertyNames.append("#{item."+field.getPropertyName()).append("},");
             }
+
             String propertyNamesStr = propertyNames.substring(0, propertyNames.lastIndexOf(","));
             bw.write("\t\t\t"+propertyNamesStr+"\n");
+            bw.write("\t\t)\n");
             bw.write("\t\t</foreach>\n");
             bw.write("\t</insert>\n\n");
 
@@ -224,19 +227,19 @@ public class BuildMapperXml {
             bw.write("\t<!-- 批量添加 修改（批量插入）-->\n");
             bw.write("\t<insert id=\"insertOrUpdateBatch\" parameterType=\""+poName+"\">\n");
             bw.write("\t\tINSERT INTO "+tableInfo.getTableName()+"("+fieldsStr+")values\n");
-            bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\" open=\"(\" close=\")\">\n");
-            bw.write("\t\t\t"+propertyNamesStr+"\n");
+            bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\">\n");
+            bw.write("\t\t\t("+propertyNamesStr+")\n");
             bw.write("\t\t</foreach>\n");
             bw.write("\t\ton DUPLICATE key update\n");
             Integer indexSize = 0;
             for (FieldInfo field:tableInfo.getFieldList()) {
-                indexSize ++;
                 if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
-                if (indexSize < tableInfo.getFieldList().size()-1) {
-                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getPropertyName()+"),\n");
-                }else if (indexSize == tableInfo.getFieldList().size()-1){
-                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getPropertyName()+")\n");
+                if (indexSize < tableInfo.getFieldList().size()-2) {
+                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getFieldName()+"),\n");
+                }else if (indexSize == tableInfo.getFieldList().size()-2){
+                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getFieldName()+")\n");
                 }
+                indexSize ++;
             }
             bw.write("\t</insert>\n\n");
 
@@ -272,11 +275,12 @@ public class BuildMapperXml {
                 bw.write("\t\t<set>\n");
                 for (FieldInfo field:tableInfo.getFieldList()) {
                     if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
-                    bw.write("\t\t\t<if test=\""+field.getPropertyName()+"!=null\">\n");
+                    bw.write("\t\t\t<if test=\"bean."+field.getPropertyName()+"!=null\">\n");
                     bw.write("\t\t\t\t"+field.getFieldName()+" = #{bean."+field.getPropertyName()+"},\n");
                     bw.write("\t\t\t</if>\n");
                 }
                 bw.write("\t\t</set>\n");
+                bw.write("\t\twhere "+methodParam+"\n");
                 bw.write("\t</update>\n\n");
 
                 bw.write("\t<!-- 根据"+methodName+"删除 -->\n");

@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -48,5 +49,41 @@ public class MapperTest {
         nameInfo.setCreateTime(new Date());
         nameInfoMapper.insertOrUpdate(nameInfo);
         System.out.println(nameInfo.getId());
+    }
+
+    @Test
+    public void insertBatch() {
+        List<NameInfo> list = new ArrayList();
+        NameInfo nameInfo = new NameInfo();
+        nameInfo.setName("lll2122");
+        nameInfo.setCreateTime(new Date());
+
+        NameInfo nameInfo1 = new NameInfo();
+        nameInfo1.setName("231ewq");
+        nameInfo1.setCreateTime(new Date());
+        list.add(nameInfo);
+        list.add(nameInfo1);
+        nameInfoMapper.insertOrUpdateBatch(list);
+    }
+
+    @Test
+    public void selectById() {
+        PhoneInfo phoneInfo = phoneInfoMapper.selectById(1);
+        System.out.println(phoneInfo);
+        NameInfo nameInfo = nameInfoMapper.selectById(6);
+        System.out.println(nameInfo.getCreateTime());
+        System.out.println(nameInfo);
+    }
+    @Test
+    public void updateById() {
+
+        NameInfo nameInfo = new NameInfo();
+        nameInfo.setTitle("423");
+        nameInfo.setCreateTime(new Date());
+        nameInfoMapper.updateById(nameInfo,1);
+    }
+    @Test
+    public void deleteById() {
+        nameInfoMapper.deleteByName("lll2122");
     }
 }

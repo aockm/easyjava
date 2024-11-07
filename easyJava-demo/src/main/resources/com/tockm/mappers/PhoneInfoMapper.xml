@@ -18,9 +18,9 @@
 		<!---->
 		<result column="sex" property="sex"/>
 		<!--创建时间-->
-		<result column="createTime" property="createTime"/>
+		<result column="create_time" property="createTime"/>
 		<!---->
-		<result column="createDate" property="createDate"/>
+		<result column="create_date" property="createDate"/>
 	</resultMap>
 
 	<!--通用查询结果列-->
@@ -272,16 +272,18 @@
 	<!--添加（批量插入）-->
 	<insert id="insertBatch" parameterType="com.tockm.entity.po.PhoneInfo">
 		INSERT INTO tb_phone_info(phone,province,city,sp,name,sex,create_time,create_date)values
-		<foreach collection="list" item="item" separator="," open="(" close=")">
+		<foreach collection="list" item="item" separator=",">
+		(
 			#{item.phone},#{item.province},#{item.city},#{item.sp},#{item.name},#{item.sex},#{item.createTime},#{item.createDate}
+		)
 		</foreach>
 	</insert>
 
 	<!-- 批量添加 修改（批量插入）-->
 	<insert id="insertOrUpdateBatch" parameterType="com.tockm.entity.po.PhoneInfo">
 		INSERT INTO tb_phone_info(phone,province,city,sp,name,sex,create_time,create_date)values
-		<foreach collection="list" item="item" separator="," open="(" close=")">
-			#{item.phone},#{item.province},#{item.city},#{item.sp},#{item.name},#{item.sex},#{item.createTime},#{item.createDate}
+		<foreach collection="list" item="item" separator=",">
+			(#{item.phone},#{item.province},#{item.city},#{item.sp},#{item.name},#{item.sex},#{item.createTime},#{item.createDate})
 		</foreach>
 		on DUPLICATE key update
 		phone = VALUES(phone),
@@ -290,7 +292,8 @@
 		sp = VALUES(sp),
 		name = VALUES(name),
 		sex = VALUES(sex),
-		create_time = VALUES(createTime)
+		create_time = VALUES(create_time),
+		create_date = VALUES(create_date)
 	</insert>
 
 	<!-- 根据主键修改 -->
@@ -305,31 +308,32 @@
 	<update id="updateById" parameterType="com.tockm.entity.po.PhoneInfo">
 		update tb_phone_info
 		<set>
-			<if test="phone!=null">
+			<if test="bean.phone!=null">
 				phone = #{bean.phone},
 			</if>
-			<if test="province!=null">
+			<if test="bean.province!=null">
 				province = #{bean.province},
 			</if>
-			<if test="city!=null">
+			<if test="bean.city!=null">
 				city = #{bean.city},
 			</if>
-			<if test="sp!=null">
+			<if test="bean.sp!=null">
 				sp = #{bean.sp},
 			</if>
-			<if test="name!=null">
+			<if test="bean.name!=null">
 				name = #{bean.name},
 			</if>
-			<if test="sex!=null">
+			<if test="bean.sex!=null">
 				sex = #{bean.sex},
 			</if>
-			<if test="createTime!=null">
+			<if test="bean.createTime!=null">
 				create_time = #{bean.createTime},
 			</if>
-			<if test="createDate!=null">
+			<if test="bean.createDate!=null">
 				create_date = #{bean.createDate},
 			</if>
 		</set>
+		where id=#{id}
 	</update>
 
 	<!-- 根据Id删除 -->
