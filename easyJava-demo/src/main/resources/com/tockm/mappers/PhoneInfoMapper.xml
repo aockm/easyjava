@@ -269,5 +269,13 @@
 		</trim>
 	</insert>
 
+	<!--添加（批量插入）-->
+	<insert id="insertBatch" parameterType="com.tockm.entity.po.PhoneInfo">
+		INSERT INTO tb_phone_info(phone,province,city,sp,name,sex,create_time,create_date)values
+		<foreach collection="list" item="item" separator="," open="(" close=")">
+			#{item.phone},#{item.province},#{item.city},#{item.sp},#{item.name},#{item.sex},#{item.createTime},#{item.createDate}
+		</foreach>
+	</insert>
+
 </mapper>
 

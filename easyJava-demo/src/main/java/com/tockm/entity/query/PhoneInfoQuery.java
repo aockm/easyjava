@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  *@Description: 手机号码查询
- *@date: 2024/11/06
+ *@date: 2024/11/07
  */
 public class PhoneInfoQuery extends BaseQuery {
 	private Integer id;

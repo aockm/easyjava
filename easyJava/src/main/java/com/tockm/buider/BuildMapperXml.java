@@ -197,9 +197,34 @@ public class BuildMapperXml {
             bw.write("\t\t</trim>\n");
 
             bw.write("\t</insert>\n\n");
+            //  添加（批量插入）
+            bw.write("\t<!--添加（批量插入）-->\n");
+            bw.write("\t<insert id=\"insertBatch\" parameterType=\""+poName+"\">\n");
+            StringBuffer fields = new StringBuffer();
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
+                fields.append(field.getFieldName()).append(",");
+            }
+            String fieldsStr = fields.substring(0, fields.lastIndexOf(","));
+            bw.write("\t\tINSERT INTO "+tableInfo.getTableName()+"("+fieldsStr+")values\n");
+            bw.write("\t\t<foreach collection=\"list\" item=\"item\" separator=\",\" open=\"(\" close=\")\">\n");
+            StringBuffer propertyNames = new StringBuffer();
+            for (FieldInfo field:tableInfo.getFieldList()) {
+                if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
+                propertyNames.append("#{item."+field.getPropertyName()).append("},");
+            }
+            String propertyNamesStr = propertyNames.substring(0, propertyNames.lastIndexOf(","));
+            bw.write("\t\t\t"+propertyNamesStr+"\n");
+            bw.write("\t\t</foreach>\n");
+            bw.write("\t</insert>\n\n");
 
 
+            //  批量添加 修改（批量插入）
+            bw.write("\t<!-- 批量添加 修改（批量插入）-->\n");
+            bw.write("\t<insert id=\"insertOrUpdateBatch\" parameterType=\""+poName+"\">\n");
+            bw.write("\t\tINSERT INTO "+tableInfo.getTableName()+"("+fieldsStr+")values\n");
 
+            bw.write("\t</insert>\n\n");
             bw.write("</mapper>\n");
             bw.newLine();
 
