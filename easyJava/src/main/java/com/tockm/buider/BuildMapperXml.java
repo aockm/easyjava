@@ -233,9 +233,9 @@ public class BuildMapperXml {
                 indexSize ++;
                 if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
                 if (indexSize < tableInfo.getFieldList().size()-1) {
-                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getFieldName()+"),\n");
+                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getPropertyName()+"),\n");
                 }else if (indexSize == tableInfo.getFieldList().size()-1){
-                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getFieldName()+")\n");
+                    bw.write("\t\t"+field.getFieldName()+" = VALUES("+field.getPropertyName()+")\n");
                 }
             }
             bw.write("\t</insert>\n\n");
@@ -259,7 +259,6 @@ public class BuildMapperXml {
                     }
                 }
 
-                BuildComment.createFieldComment(bw,"根据"+methodName+"查询");
                 bw.write("\t<!-- 根据"+methodName+"查询 -->\n");
                 bw.write("\t<select id=\"selectBy"+methodName+"\" resultMap=\"base_result_map\">\n");
                 bw.write("\t\tselect <include refid=\"base_column_list\"/>\n");
@@ -267,12 +266,19 @@ public class BuildMapperXml {
                 bw.write("\t\twhere "+methodParam+"\n");
                 bw.write("\t</select>\n\n");
 
-                BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
                 bw.write("\t<!-- 根据"+methodName+"更新 -->\n");
-                bw.write("\t<update id=\"updateBy"+methodName+"\" resultMap=\"base_result_map\">\n");
+                bw.write("\t<update id=\"updateBy"+methodName+"\" parameterType=\""+poName+"\">\n");
+                bw.write("\t\tupdate "+tableInfo.getTableName()+"\n");
+                bw.write("\t\t<set>\n");
+                for (FieldInfo field:tableInfo.getFieldList()) {
+                    if (field.getAutoIncrement()!=null&&field.getAutoIncrement()) {continue;}
+                    bw.write("\t\t\t<if test=\""+field.getPropertyName()+"!=null\">\n");
+                    bw.write("\t\t\t\t"+field.getFieldName()+" = #{bean."+field.getPropertyName()+"},\n");
+                    bw.write("\t\t\t</if>\n");
+                }
+                bw.write("\t\t</set>\n");
                 bw.write("\t</update>\n\n");
 
-                BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
                 bw.write("\t<!-- 根据"+methodName+"删除 -->\n");
                 bw.write("\t<delete id=\"deleteBy"+methodName+"\">\n");
                 bw.write("\t\tdelete from "+tableInfo.getTableName()+"\n");

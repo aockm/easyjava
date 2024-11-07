@@ -290,13 +290,10 @@
 		sp = VALUES(sp),
 		name = VALUES(name),
 		sex = VALUES(sex),
-		create_time = VALUES(create_time)
+		create_time = VALUES(createTime)
 	</insert>
 
 	<!-- 根据主键修改 -->
-	/**
-	 * 根据Id查询
-	 */
 	<!-- 根据Id查询 -->
 	<select id="selectById" resultMap="base_result_map">
 		select <include refid="base_column_list"/>
@@ -304,16 +301,37 @@
 		where id=#{id}
 	</select>
 
-	/**
-	 * 根据Id更新
-	 */
 	<!-- 根据Id更新 -->
-	<update id="updateById" resultMap="base_result_map">
+	<update id="updateById" parameterType="com.tockm.entity.po.PhoneInfo">
+		update tb_phone_info
+		<set>
+			<if test="phone!=null">
+				phone = #{bean.phone},
+			</if>
+			<if test="province!=null">
+				province = #{bean.province},
+			</if>
+			<if test="city!=null">
+				city = #{bean.city},
+			</if>
+			<if test="sp!=null">
+				sp = #{bean.sp},
+			</if>
+			<if test="name!=null">
+				name = #{bean.name},
+			</if>
+			<if test="sex!=null">
+				sex = #{bean.sex},
+			</if>
+			<if test="createTime!=null">
+				create_time = #{bean.createTime},
+			</if>
+			<if test="createDate!=null">
+				create_date = #{bean.createDate},
+			</if>
+		</set>
 	</update>
 
-	/**
-	 * 根据Id删除
-	 */
 	<!-- 根据Id删除 -->
 	<delete id="deleteById">
 		delete from tb_phone_info
