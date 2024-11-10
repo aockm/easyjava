@@ -20,6 +20,7 @@ public class App
             BuildQuery.execute(table);
             BuildMapper.execute(table);
             BuildMapperXml.execute(table);
+            BuildService.execute(table);
 
         }
 

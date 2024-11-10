@@ -26,6 +26,8 @@ public class Constants {
     public static String PACKAGE_QUERY;
     public static String PACKAGE_UTILS;
     public static String PACKAGE_MAPPER;
+    public static String PACKAGE_SERVICE;
+    public static String PACKAGE_SERVICE_IMPL   ;
     public static String PACKAGE_ENUMS;
     public static String PATH_JAVA;
     public static String PATH_PO;
@@ -34,6 +36,8 @@ public class Constants {
     public static String PATH_ENUMS;
     public static String PATH_MAPPER;
     public static String PATH_MAPPER_XML;
+    public static String PATH_SERVICE;
+    public static String PATH_SERVICE_IMPL;
 
 
     static {
@@ -63,11 +67,15 @@ public class Constants {
         PATH_UTILS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.utils").replace('.', '/');
         PATH_ENUMS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.enums").replace('.', '/');
         PATH_MAPPER = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.mappers").replace('.', '/');
+        PATH_SERVICE = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.service").replace('.', '/');
+        PATH_SERVICE_IMPL = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.service.impl").replace('.', '/');
         PACKAGE_PO = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.po");
         PACKAGE_QUERY = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.query");
         PACKAGE_UTILS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.utils");
         PACKAGE_ENUMS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.enums");
         PACKAGE_MAPPER = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.mappers");
+        PACKAGE_SERVICE = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.service");
+        PACKAGE_SERVICE_IMPL = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.service.impl");
 
         PATH_MAPPER_XML = PropertiesUtils.getProperty("path.base")+"/"+PATH_RESOURCES_NAME+"/"+PACKAGE_MAPPER.replace(".","/");
         PATH_MAPPER_XML = PATH_MAPPER_XML.replace('.', '/');
