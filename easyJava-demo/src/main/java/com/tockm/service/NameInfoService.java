@@ -2,10 +2,11 @@ package com.tockm.service;
 import com.tockm.entity.po.NameInfo;
 import com.tockm.entity.query.NameInfoQuery;
 import java.util.List;
+import com.tockm.entity.vo.PaginationResultVo;
 
 /**
  *@Description: Service
- *@date: 2024/11/10
+ *@date: 2024/11/17
  */
 public interface NameInfoService {
 	/**
@@ -19,5 +20,5 @@ public interface NameInfoService {
 	/**
 	 * 分页查询
 	 */
-	Integer findListByPage(NameInfoQuery param);
+	PaginationResultVo<NameInfo> findListByPage(NameInfoQuery param);
 }

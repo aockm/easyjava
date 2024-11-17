@@ -2,10 +2,11 @@ package com.tockm.service;
 import com.tockm.entity.po.PhoneInfo;
 import com.tockm.entity.query.PhoneInfoQuery;
 import java.util.List;
+import com.tockm.entity.vo.PaginationResultVo;
 
 /**
  *@Description: 手机号码Service
- *@date: 2024/11/10
+ *@date: 2024/11/17
  */
 public interface PhoneInfoService {
 	/**
@@ -19,5 +20,5 @@ public interface PhoneInfoService {
 	/**
 	 * 分页查询
 	 */
-	Integer findListByPage(PhoneInfoQuery param);
+	PaginationResultVo<PhoneInfo> findListByPage(PhoneInfoQuery param);
 }

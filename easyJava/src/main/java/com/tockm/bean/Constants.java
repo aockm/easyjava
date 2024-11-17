@@ -23,6 +23,7 @@ public class Constants {
     public static String PATH_RESOURCES_NAME = "resources";
     public static String PACKAGE_BASE;
     public static String PACKAGE_PO;
+    public static String PACKAGE_VO;
     public static String PACKAGE_QUERY;
     public static String PACKAGE_UTILS;
     public static String PACKAGE_MAPPER;
@@ -31,6 +32,7 @@ public class Constants {
     public static String PACKAGE_ENUMS;
     public static String PATH_JAVA;
     public static String PATH_PO;
+    public static String PATH_VO;
     public static String PATH_QUERY;
     public static String PATH_UTILS;
     public static String PATH_ENUMS;
@@ -63,6 +65,7 @@ public class Constants {
 
 
         PATH_PO = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.po").replace('.', '/');
+        PATH_VO = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.vo").replace('.', '/');
         PATH_QUERY = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.query").replace('.', '/');
         PATH_UTILS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.utils").replace('.', '/');
         PATH_ENUMS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.enums").replace('.', '/');
@@ -70,6 +73,7 @@ public class Constants {
         PATH_SERVICE = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.service").replace('.', '/');
         PATH_SERVICE_IMPL = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.service.impl").replace('.', '/');
         PACKAGE_PO = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.po");
+        PACKAGE_VO = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.vo");
         PACKAGE_QUERY = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.query");
         PACKAGE_UTILS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.utils");
         PACKAGE_ENUMS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.enums");
