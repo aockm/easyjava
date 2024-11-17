@@ -11,14 +11,15 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 
-public class BuildService {
-    public static final Logger logger = LoggerFactory.getLogger(BuildService.class);
+public class BuildServiceImpl {
+    public static final Logger logger = LoggerFactory.getLogger(BuildServiceImpl.class);
     public static void execute(TableInfo tableInfo) {
-        File folder = new File(Constants.PATH_SERVICE);
+        File folder = new File(Constants.PATH_SERVICE_IMPL);
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        String className = tableInfo.getBeanName()+"Service";
+        String className = tableInfo.getBeanName()+"ServiceImpl";
+        String interfaceName = tableInfo.getBeanName()+"Service";
         File poFile = new File(folder , className+".java");
         OutputStream out = null;
         OutputStreamWriter osw = null;
@@ -27,28 +28,38 @@ public class BuildService {
             out = new FileOutputStream(poFile);
             osw = new OutputStreamWriter(out, "UTF-8");
             bw = new BufferedWriter(osw);
-            bw.write("package "+Constants.PACKAGE_SERVICE+";\n");
+            bw.write("package "+Constants.PACKAGE_SERVICE_IMPL+";\n");
+            bw.write("import "+Constants.PACKAGE_SERVICE+"."+interfaceName+";\n");
             bw.write("import "+Constants.PACKAGE_PO+"."+tableInfo.getBeanName()+";\n");
             bw.write("import "+Constants.PACKAGE_QUERY+"."+tableInfo.getBeanParamName()+";\n");
-            bw.write("import java.util.List;\n");
             bw.write("import "+Constants.PACKAGE_VO+".PaginationResultVo;\n");
+            bw.write("import java.util.List;\n");
+            bw.write("import org.springframework.stereotype.Service;;\n");
             bw.newLine();
             BuildComment.createClassComment(bw,tableInfo.getComment()+"Service");
-            bw.write("public interface "+className+" {\n");
+            bw.write("@Service(\""+StringUtils.lowerCaseFirstLetter(interfaceName)+"\")\n");
+            bw.write("public class "+className+" implements "+interfaceName+" {\n");
 
             BuildComment.createMethodComment(bw,"根据条件查询列表");
-            bw.write("@override\n");
-            bw.write("\tList<"+tableInfo.getBeanName()+"> findListByParam("+tableInfo.getBeanParamName()+" param);\n");
+            bw.write("\tpublic List<"+tableInfo.getBeanName()+"> findListByParam("+tableInfo.getBeanParamName()+" param){\n");
+            bw.write("\t}\n");
             BuildComment.createMethodComment(bw,"根据条件查询数量");
-            bw.write("\tInteger findCountByParam("+tableInfo.getBeanParamName()+" param);\n");
+            bw.write("\tpublic Integer findCountByParam("+tableInfo.getBeanParamName()+" param){\n");
+            bw.write("\t}\n");
+
             BuildComment.createMethodComment(bw,"分页查询");
-            bw.write("\tPaginationResultVo<"+tableInfo.getBeanName()+"> findListByPage("+tableInfo.getBeanParamName()+" param);\n");
+            bw.write("\tpublic PaginationResultVo<"+tableInfo.getBeanName()+"> findListByPage("+tableInfo.getBeanParamName()+" param){\n");
+            bw.write("\t}\n");
             BuildComment.createMethodComment(bw,"新增");
-            bw.write("\tInteger add("+tableInfo.getBeanName()+" bean);\n");
+            bw.write("\tpublic Integer add("+tableInfo.getBeanName()+" bean){\n");
+            bw.write("\t}\n");
             BuildComment.createMethodComment(bw,"批量新增");
-            bw.write("\tInteger addBatch(List<"+tableInfo.getBeanName()+"> listBean);\n");
+            bw.write("\tpublic Integer addBatch(List<"+tableInfo.getBeanName()+"> listBean){\n");
+            bw.write("\t}\n");
+
             BuildComment.createMethodComment(bw,"批量新增/修改");
-            bw.write("\tInteger addOrUpdateBatch("+tableInfo.getBeanName()+" bean);\n");
+            bw.write("\tpublic Integer addOrUpdateBatch("+tableInfo.getBeanName()+" bean){\n");
+            bw.write("\t}\n");
             for (Map.Entry<String, List<FieldInfo>> entry : tableInfo.getKeyIndexMap().entrySet()) {
                 List<FieldInfo> keyFieldInfList = entry.getValue();
                 Integer index = 0;
@@ -65,16 +76,20 @@ public class BuildService {
                 }
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"查询");
-                bw.write("\t"+tableInfo.getBeanName()+" getBy"+methodName+"("+methodParam+");\n");
+                bw.write("\tpublic "+tableInfo.getBeanName()+" getBy"+methodName+"("+methodParam+"){\n");
+                bw.write("\t}\n");
+
 
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
-                bw.write("\tInteger updateBy"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+");\n");
-
+                bw.write("\tpublic Integer updateBy"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+"){\n");
+                bw.write("\t}\n");
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
-                bw.write("\tInteger deleteBy"+methodName+"("+methodParam+");\n");
+                bw.write("\tpublic Integer deleteBy"+methodName+"("+methodParam+"){\n");
+                bw.write("\t}\n");
             }
+
 
             bw.write("}");
             bw.flush();

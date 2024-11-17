@@ -21,6 +21,7 @@ public class App
             BuildMapper.execute(table);
             BuildMapperXml.execute(table);
             BuildService.execute(table);
+            BuildServiceImpl.execute(table);
 
         }
 
