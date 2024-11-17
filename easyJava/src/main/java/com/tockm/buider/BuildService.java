@@ -1,11 +1,15 @@
 package com.tockm.buider;
 
 import com.tockm.bean.Constants;
+import com.tockm.bean.FieldInfo;
 import com.tockm.bean.TableInfo;
+import com.tockm.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.List;
+import java.util.Map;
 
 public class BuildService {
     public static final Logger logger = LoggerFactory.getLogger(BuildPo.class);
@@ -38,6 +42,38 @@ public class BuildService {
             bw.write("\tInteger findCountByParam("+tableInfo.getBeanParamName()+" param);\n");
             BuildComment.createMethodComment(bw,"分页查询");
             bw.write("\tPaginationResultVo<"+tableInfo.getBeanName()+"> findListByPage("+tableInfo.getBeanParamName()+" param);\n");
+            BuildComment.createMethodComment(bw,"新增");
+            bw.write("\tInteger add("+tableInfo.getBeanName()+" bean);\n");
+            BuildComment.createMethodComment(bw,"批量新增");
+            bw.write("\tInteger addBatch(List<"+tableInfo.getBeanName()+"> listBean);\n");
+            BuildComment.createMethodComment(bw,"批量新增/修改");
+            bw.write("\tInteger addOrUpdateBatch("+tableInfo.getBeanName()+" bean);\n");
+            for (Map.Entry<String, List<FieldInfo>> entry : tableInfo.getKeyIndexMap().entrySet()) {
+                List<FieldInfo> keyFieldInfList = entry.getValue();
+                Integer index = 0;
+                StringBuffer methodName = new StringBuffer();
+                StringBuffer methodParam = new StringBuffer();
+                for (FieldInfo fieldInfo : keyFieldInfList) {
+                    index++;
+                    methodName.append(StringUtils.upperCaseFirstLetter(fieldInfo.getPropertyName()));
+                    methodParam.append(fieldInfo.getJavaType()+" "+fieldInfo.getPropertyName());
+                    if (index < keyFieldInfList.size()) {
+                        methodName.append("And");
+                        methodParam.append(", ");
+                    }
+                }
+                bw.newLine();
+                BuildComment.createFieldComment(bw,"根据"+methodName+"查询");
+                bw.write("\t"+tableInfo.getBeanName()+" getBy"+methodName+"("+methodParam+");\n");
+
+                bw.newLine();
+                BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
+                bw.write("\tInteger updateBy"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+");\n");
+
+                bw.newLine();
+                BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
+                bw.write("\tInteger deleteBy"+methodName+"("+methodParam+");\n");
+            }
 
             bw.write("}");
             bw.flush();

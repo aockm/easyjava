@@ -21,4 +21,31 @@ public interface PhoneInfoService {
 	 * 分页查询
 	 */
 	PaginationResultVo<PhoneInfo> findListByPage(PhoneInfoQuery param);
+	/**
+	 * 新增
+	 */
+	Integer add(PhoneInfo bean);
+	/**
+	 * 批量新增
+	 */
+	Integer addBatch(List<PhoneInfo> listBean);
+	/**
+	 * 批量新增/修改
+	 */
+	Integer addOrUpdateBatch(PhoneInfo bean);
+
+	/**
+	 * 根据Id查询
+	 */
+	PhoneInfo getById(Integer id);
+
+	/**
+	 * 根据Id更新
+	 */
+	Integer updateById(PhoneInfo bean, Integer id);
+
+	/**
+	 * 根据Id删除
+	 */
+	Integer deleteById(Integer id);
 }
