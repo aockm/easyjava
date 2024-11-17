@@ -37,7 +37,6 @@ public class BuildService {
             bw.write("public interface "+className+" {\n");
 
             BuildComment.createMethodComment(bw,"根据条件查询列表");
-            bw.write("@override\n");
             bw.write("\tList<"+tableInfo.getBeanName()+"> findListByParam("+tableInfo.getBeanParamName()+" param);\n");
             BuildComment.createMethodComment(bw,"根据条件查询数量");
             bw.write("\tInteger findCountByParam("+tableInfo.getBeanParamName()+" param);\n");
