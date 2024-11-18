@@ -1,5 +1,10 @@
 package com.tockm.utils;
 
+import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
+import java.util.logging.Logger;
+
 public class BaseParam {
     private SimplePage simplePage;
     private Integer pageNo;
@@ -38,3 +43,5 @@ public class BaseParam {
         this.orderBy = orderBy;
     }
 }
+
+

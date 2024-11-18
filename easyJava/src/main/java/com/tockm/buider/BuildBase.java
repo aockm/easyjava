@@ -31,7 +31,11 @@ public class BuildBase {
         headerInfoList.add("package "+Constants.PACKAGE_ENUMS+";");
 
         build(headerInfoList,"PageSize", Constants.PATH_ENUMS);
+        // 生成ResponseCode枚举
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_ENUMS+";");
 
+        build(headerInfoList,"ResponseCodeEnum", Constants.PATH_ENUMS);
         // 生成分页
         headerInfoList.clear();
         headerInfoList.add("package "+Constants.PACKAGE_QUERY+";");
@@ -46,6 +50,33 @@ public class BuildBase {
         headerInfoList.clear();
         headerInfoList.add("package "+Constants.PACKAGE_VO+";");
         build(headerInfoList,"PaginationResultVo", Constants.PATH_VO);
+        // 生成ResponseVo
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_VO+";");
+        build(headerInfoList,"ResponseVo", Constants.PATH_VO);
+
+        // 生成ABaseController
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_CONTROLLER+";");
+        headerInfoList.add("import "+Constants.PACKAGE_EXCEPTION+".BusinessException;");
+        headerInfoList.add("import "+Constants.PACKAGE_VO+".ResponseVo;");
+        headerInfoList.add("import "+Constants.PACKAGE_ENUMS+".ResponseCodeEnum;\n");
+
+        build(headerInfoList,"ABaseController", Constants.PATH_CONTROLLER);
+        // 生成AGlobalExceptionHandleController
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_CONTROLLER+";");
+        headerInfoList.add("import "+Constants.PACKAGE_VO+".ResponseVo;");
+        headerInfoList.add("import "+Constants.PACKAGE_ENUMS+".ResponseCodeEnum;");
+        headerInfoList.add("import "+Constants.PACKAGE_EXCEPTION+".BusinessException;");
+
+        build(headerInfoList,"AGlobalExceptionHandlerController", Constants.PATH_CONTROLLER);
+
+        // 生成BusinessException
+        headerInfoList.clear();
+        headerInfoList.add("package "+Constants.PACKAGE_EXCEPTION+";");
+        headerInfoList.add("import "+Constants.PACKAGE_ENUMS+".ResponseCodeEnum;\n");
+        build(headerInfoList,"BusinessException", Constants.PATH_EXCEPTION);
 
     }
 

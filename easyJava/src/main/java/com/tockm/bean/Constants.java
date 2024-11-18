@@ -27,6 +27,8 @@ public class Constants {
     public static String PACKAGE_QUERY;
     public static String PACKAGE_UTILS;
     public static String PACKAGE_MAPPER;
+    public static String PACKAGE_CONTROLLER;
+    public static String PACKAGE_EXCEPTION;
     public static String PACKAGE_SERVICE;
     public static String PACKAGE_SERVICE_IMPL   ;
     public static String PACKAGE_ENUMS;
@@ -37,6 +39,8 @@ public class Constants {
     public static String PATH_UTILS;
     public static String PATH_ENUMS;
     public static String PATH_MAPPER;
+    public static String PATH_CONTROLLER;
+    public static String PATH_EXCEPTION;
     public static String PATH_MAPPER_XML;
     public static String PATH_SERVICE;
     public static String PATH_SERVICE_IMPL;
@@ -70,6 +74,8 @@ public class Constants {
         PATH_UTILS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.utils").replace('.', '/');
         PATH_ENUMS = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.enums").replace('.', '/');
         PATH_MAPPER = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.mappers").replace('.', '/');
+        PATH_CONTROLLER = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.controller").replace('.', '/');
+        PATH_EXCEPTION = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.exception").replace('.', '/');
         PATH_SERVICE = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.service").replace('.', '/');
         PATH_SERVICE_IMPL = PATH_JAVA + "/"+ PropertiesUtils.getProperty("package.service.impl").replace('.', '/');
         PACKAGE_PO = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.po");
@@ -78,6 +84,8 @@ public class Constants {
         PACKAGE_UTILS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.utils");
         PACKAGE_ENUMS = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.enums");
         PACKAGE_MAPPER = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.mappers");
+        PACKAGE_CONTROLLER = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.controller");
+        PACKAGE_EXCEPTION = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.exception");
         PACKAGE_SERVICE = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.service");
         PACKAGE_SERVICE_IMPL = PACKAGE_BASE + "."+ PropertiesUtils.getProperty("package.service.impl");
 
