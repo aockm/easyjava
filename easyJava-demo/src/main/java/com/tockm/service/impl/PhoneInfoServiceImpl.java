@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *@Description: 手机号码Service
- *@date: 2024/11/18
+ *@date: 2024/11/19
  */
 @Service("phoneInfoService")
 public class PhoneInfoServiceImpl implements PhoneInfoService {
@@ -91,6 +91,7 @@ public class PhoneInfoServiceImpl implements PhoneInfoService {
 	/**
 	 * 根据Id更新
 	 */
+	@Override
 	public Integer updatePhoneInfoById(PhoneInfo bean, Integer id){
 		return this.phoneInfoMapper.updateById(bean,id);
 	}
@@ -99,6 +100,7 @@ public class PhoneInfoServiceImpl implements PhoneInfoService {
 	/**
 	 * 根据Id删除
 	 */
+	@Override
 	public Integer deletePhoneInfoById(Integer id){
 		return this.phoneInfoMapper.deleteById(id);
 	}

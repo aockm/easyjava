@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *@Description: Service
- *@date: 2024/11/18
+ *@date: 2024/11/19
  */
 @Service("nameInfoService")
 public class NameInfoServiceImpl implements NameInfoService {
@@ -91,6 +91,7 @@ public class NameInfoServiceImpl implements NameInfoService {
 	/**
 	 * 根据Id更新
 	 */
+	@Override
 	public Integer updateNameInfoById(NameInfo bean, Integer id){
 		return this.nameInfoMapper.updateById(bean,id);
 	}
@@ -99,6 +100,7 @@ public class NameInfoServiceImpl implements NameInfoService {
 	/**
 	 * 根据Id删除
 	 */
+	@Override
 	public Integer deleteNameInfoById(Integer id){
 		return this.nameInfoMapper.deleteById(id);
 	}
@@ -116,6 +118,7 @@ public class NameInfoServiceImpl implements NameInfoService {
 	/**
 	 * 根据Name更新
 	 */
+	@Override
 	public Integer updateNameInfoByName(NameInfo bean, String name){
 		return this.nameInfoMapper.updateByName(bean,name);
 	}
@@ -124,6 +127,7 @@ public class NameInfoServiceImpl implements NameInfoService {
 	/**
 	 * 根据Name删除
 	 */
+	@Override
 	public Integer deleteNameInfoByName(String name){
 		return this.nameInfoMapper.deleteByName(name);
 	}

@@ -119,12 +119,14 @@ public class BuildServiceImpl {
 
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
+                bw.write("\t@Override\n");
                 bw.write("\tpublic Integer update"+tableInfo.getBeanName()+"By"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+"){\n");
                 bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".updateBy"+methodName+"(bean,"+paramBuilder+");\n");
 
                 bw.write("\t}\n\n");
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
+                bw.write("\t@Override\n");
                 bw.write("\tpublic Integer delete"+tableInfo.getBeanName()+"By"+methodName+"("+methodParam+"){\n");
                 bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".deleteBy"+methodName+"("+paramBuilder+");\n");
 
