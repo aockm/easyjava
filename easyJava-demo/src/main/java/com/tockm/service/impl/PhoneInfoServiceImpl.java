@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *@Description: 手机号码Service
- *@date: 2024/11/17
+ *@date: 2024/11/18
  */
 @Service("phoneInfoService")
 public class PhoneInfoServiceImpl implements PhoneInfoService {
@@ -26,18 +26,18 @@ public class PhoneInfoServiceImpl implements PhoneInfoService {
 		return this.phoneInfoMapper.selectList(param);
 	}
 
-	@Override
 	/**
 	 * 根据条件查询数量
 	 */
+	@Override
 	public Integer findCountByParam(PhoneInfoQuery param){
 		return this.phoneInfoMapper.selectCount(param);
 	}
 
-	@Override
 	/**
 	 * 分页查询
 	 */
+	@Override
 	public PaginationResultVo<PhoneInfo> findListByPage(PhoneInfoQuery query){
 		int count = this.findCountByParam(query);
 		int pageSize = query.getPageSize()==null?PageSize.SIZE15.getSize():query.getPageSize();
@@ -48,25 +48,34 @@ public class PhoneInfoServiceImpl implements PhoneInfoService {
 		return result;
 	}
 
-	@Override
 	/**
 	 * 新增
 	 */
+	@Override
 	public Integer add(PhoneInfo bean){
+		return this.phoneInfoMapper.insert(bean);
 	}
 
-	@Override
 	/**
 	 * 批量新增
 	 */
+	@Override
 	public Integer addBatch(List<PhoneInfo> listBean){
+		if(listBean==null||listBean.isEmpty()){
+			return 0;
+		}
+		return this.phoneInfoMapper.insertBatch(listBean);
 	}
 
-	@Override
 	/**
 	 * 批量新增/修改
 	 */
-	public Integer addOrUpdateBatch(PhoneInfo bean){
+	@Override
+	public Integer addOrUpdateBatch(List<PhoneInfo> listBean){
+		if(listBean==null||listBean.isEmpty()){
+			return 0;
+		}
+		return this.phoneInfoMapper.insertOrUpdateBatch(listBean);
 	}
 
 
@@ -74,21 +83,24 @@ public class PhoneInfoServiceImpl implements PhoneInfoService {
 	 * 根据Id查询
 	 */
 	@Override
-	public PhoneInfo getById(Integer id){
+	public PhoneInfo getPhoneInfoById(Integer id){
+		return this.phoneInfoMapper.selectById(id);
 	}
 
 
 	/**
 	 * 根据Id更新
 	 */
-	public Integer updateById(PhoneInfo bean, Integer id){
+	public Integer updatePhoneInfoById(PhoneInfo bean, Integer id){
+		return this.phoneInfoMapper.updateById(bean,id);
 	}
 
 
 	/**
 	 * 根据Id删除
 	 */
-	public Integer deleteById(Integer id){
+	public Integer deletePhoneInfoById(Integer id){
+		return this.phoneInfoMapper.deleteById(id);
 	}
 
 }

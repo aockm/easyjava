@@ -6,7 +6,7 @@ import com.tockm.entity.vo.PaginationResultVo;
 
 /**
  *@Description: Service
- *@date: 2024/11/17
+ *@date: 2024/11/18
  */
 public interface NameInfoService {
 	/**
@@ -32,35 +32,35 @@ public interface NameInfoService {
 	/**
 	 * 批量新增/修改
 	 */
-	Integer addOrUpdateBatch(NameInfo bean);
+	Integer addOrUpdateBatch(List<NameInfo> bean);
 
 	/**
 	 * 根据Id查询
 	 */
-	NameInfo getById(Integer id);
+	NameInfo getNameInfoById(Integer id);
 
 	/**
 	 * 根据Id更新
 	 */
-	Integer updateById(NameInfo bean, Integer id);
+	Integer updateNameInfoById(NameInfo bean, Integer id);
 
 	/**
 	 * 根据Id删除
 	 */
-	Integer deleteById(Integer id);
+	Integer deleteNameInfoById(Integer id);
 
 	/**
 	 * 根据Name查询
 	 */
-	NameInfo getByName(String name);
+	NameInfo getNameInfoByName(String name);
 
 	/**
 	 * 根据Name更新
 	 */
-	Integer updateByName(NameInfo bean, String name);
+	Integer updateNameInfoByName(NameInfo bean, String name);
 
 	/**
 	 * 根据Name删除
 	 */
-	Integer deleteByName(String name);
+	Integer deleteNameInfoByName(String name);
 }

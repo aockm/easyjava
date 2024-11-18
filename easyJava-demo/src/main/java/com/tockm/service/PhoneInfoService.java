@@ -6,7 +6,7 @@ import com.tockm.entity.vo.PaginationResultVo;
 
 /**
  *@Description: 手机号码Service
- *@date: 2024/11/17
+ *@date: 2024/11/18
  */
 public interface PhoneInfoService {
 	/**
@@ -32,20 +32,20 @@ public interface PhoneInfoService {
 	/**
 	 * 批量新增/修改
 	 */
-	Integer addOrUpdateBatch(PhoneInfo bean);
+	Integer addOrUpdateBatch(List<PhoneInfo> bean);
 
 	/**
 	 * 根据Id查询
 	 */
-	PhoneInfo getById(Integer id);
+	PhoneInfo getPhoneInfoById(Integer id);
 
 	/**
 	 * 根据Id更新
 	 */
-	Integer updateById(PhoneInfo bean, Integer id);
+	Integer updatePhoneInfoById(PhoneInfo bean, Integer id);
 
 	/**
 	 * 根据Id删除
 	 */
-	Integer deleteById(Integer id);
+	Integer deletePhoneInfoById(Integer id);
 }

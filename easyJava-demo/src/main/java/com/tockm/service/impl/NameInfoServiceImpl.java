@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *@Description: Service
- *@date: 2024/11/17
+ *@date: 2024/11/18
  */
 @Service("nameInfoService")
 public class NameInfoServiceImpl implements NameInfoService {
@@ -26,18 +26,18 @@ public class NameInfoServiceImpl implements NameInfoService {
 		return this.nameInfoMapper.selectList(param);
 	}
 
-	@Override
 	/**
 	 * 根据条件查询数量
 	 */
+	@Override
 	public Integer findCountByParam(NameInfoQuery param){
 		return this.nameInfoMapper.selectCount(param);
 	}
 
-	@Override
 	/**
 	 * 分页查询
 	 */
+	@Override
 	public PaginationResultVo<NameInfo> findListByPage(NameInfoQuery query){
 		int count = this.findCountByParam(query);
 		int pageSize = query.getPageSize()==null?PageSize.SIZE15.getSize():query.getPageSize();
@@ -48,25 +48,34 @@ public class NameInfoServiceImpl implements NameInfoService {
 		return result;
 	}
 
-	@Override
 	/**
 	 * 新增
 	 */
+	@Override
 	public Integer add(NameInfo bean){
+		return this.nameInfoMapper.insert(bean);
 	}
 
-	@Override
 	/**
 	 * 批量新增
 	 */
+	@Override
 	public Integer addBatch(List<NameInfo> listBean){
+		if(listBean==null||listBean.isEmpty()){
+			return 0;
+		}
+		return this.nameInfoMapper.insertBatch(listBean);
 	}
 
-	@Override
 	/**
 	 * 批量新增/修改
 	 */
-	public Integer addOrUpdateBatch(NameInfo bean){
+	@Override
+	public Integer addOrUpdateBatch(List<NameInfo> listBean){
+		if(listBean==null||listBean.isEmpty()){
+			return 0;
+		}
+		return this.nameInfoMapper.insertOrUpdateBatch(listBean);
 	}
 
 
@@ -74,21 +83,24 @@ public class NameInfoServiceImpl implements NameInfoService {
 	 * 根据Id查询
 	 */
 	@Override
-	public NameInfo getById(Integer id){
+	public NameInfo getNameInfoById(Integer id){
+		return this.nameInfoMapper.selectById(id);
 	}
 
 
 	/**
 	 * 根据Id更新
 	 */
-	public Integer updateById(NameInfo bean, Integer id){
+	public Integer updateNameInfoById(NameInfo bean, Integer id){
+		return this.nameInfoMapper.updateById(bean,id);
 	}
 
 
 	/**
 	 * 根据Id删除
 	 */
-	public Integer deleteById(Integer id){
+	public Integer deleteNameInfoById(Integer id){
+		return this.nameInfoMapper.deleteById(id);
 	}
 
 
@@ -96,21 +108,24 @@ public class NameInfoServiceImpl implements NameInfoService {
 	 * 根据Name查询
 	 */
 	@Override
-	public NameInfo getByName(String name){
+	public NameInfo getNameInfoByName(String name){
+		return this.nameInfoMapper.selectByName(name);
 	}
 
 
 	/**
 	 * 根据Name更新
 	 */
-	public Integer updateByName(NameInfo bean, String name){
+	public Integer updateNameInfoByName(NameInfo bean, String name){
+		return this.nameInfoMapper.updateByName(bean,name);
 	}
 
 
 	/**
 	 * 根据Name删除
 	 */
-	public Integer deleteByName(String name){
+	public Integer deleteNameInfoByName(String name){
+		return this.nameInfoMapper.deleteByName(name);
 	}
 
 }

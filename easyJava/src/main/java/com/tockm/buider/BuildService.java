@@ -47,7 +47,7 @@ public class BuildService {
             BuildComment.createMethodComment(bw,"批量新增");
             bw.write("\tInteger addBatch(List<"+tableInfo.getBeanName()+"> listBean);\n");
             BuildComment.createMethodComment(bw,"批量新增/修改");
-            bw.write("\tInteger addOrUpdateBatch("+tableInfo.getBeanName()+" bean);\n");
+            bw.write("\tInteger addOrUpdateBatch(List<"+tableInfo.getBeanName()+"> bean);\n");
             for (Map.Entry<String, List<FieldInfo>> entry : tableInfo.getKeyIndexMap().entrySet()) {
                 List<FieldInfo> keyFieldInfList = entry.getValue();
                 Integer index = 0;
@@ -64,15 +64,15 @@ public class BuildService {
                 }
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"查询");
-                bw.write("\t"+tableInfo.getBeanName()+" getBy"+methodName+"("+methodParam+");\n");
+                bw.write("\t"+tableInfo.getBeanName()+" get"+tableInfo.getBeanName()+"By"+methodName+"("+methodParam+");\n");
 
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
-                bw.write("\tInteger updateBy"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+");\n");
+                bw.write("\tInteger update"+tableInfo.getBeanName()+"By"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+");\n");
 
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
-                bw.write("\tInteger deleteBy"+methodName+"("+methodParam+");\n");
+                bw.write("\tInteger delete"+tableInfo.getBeanName()+"By"+methodName+"("+methodParam+");\n");
             }
 
             bw.write("}");

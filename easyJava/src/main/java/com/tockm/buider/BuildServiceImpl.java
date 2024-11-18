@@ -53,14 +53,13 @@ public class BuildServiceImpl {
             bw.write("\tpublic List<"+tableInfo.getBeanName()+"> findListByParam("+tableInfo.getBeanParamName()+" param){\n");
             bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".selectList(param);\n");
             bw.write("\t}\n\n");
-            bw.write("\t@Override\n");
             BuildComment.createMethodComment(bw,"根据条件查询数量");
+            bw.write("\t@Override\n");
             bw.write("\tpublic Integer findCountByParam("+tableInfo.getBeanParamName()+" param){\n");
             bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".selectCount(param);\n");
-
             bw.write("\t}\n\n");
-            bw.write("\t@Override\n");
             BuildComment.createMethodComment(bw,"分页查询");
+            bw.write("\t@Override\n");
             bw.write("\tpublic PaginationResultVo<"+tableInfo.getBeanName()+"> findListByPage("+tableInfo.getBeanParamName()+" query){\n");
             bw.write("\t\tint count = this.findCountByParam(query);\n");
             bw.write("\t\tint pageSize = query.getPageSize()==null?PageSize.SIZE15.getSize():query.getPageSize();\n");
@@ -70,46 +69,65 @@ public class BuildServiceImpl {
             bw.write("\t\tPaginationResultVo<"+tableInfo.getBeanName()+"> result = new PaginationResultVo(count,page.getPageSize(),page.getPageNo(),page.getTotalPage(),list);\n");
             bw.write("\t\treturn result;\n");
             bw.write("\t}\n\n");
-            bw.write("\t@Override\n");
             BuildComment.createMethodComment(bw,"新增");
+            bw.write("\t@Override\n");
             bw.write("\tpublic Integer add("+tableInfo.getBeanName()+" bean){\n");
+            bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".insert(bean);\n");
             bw.write("\t}\n\n");
-            bw.write("\t@Override\n");
+
             BuildComment.createMethodComment(bw,"批量新增");
-            bw.write("\tpublic Integer addBatch(List<"+tableInfo.getBeanName()+"> listBean){\n");
-            bw.write("\t}\n\n");
             bw.write("\t@Override\n");
+            bw.write("\tpublic Integer addBatch(List<"+tableInfo.getBeanName()+"> listBean){\n");
+            bw.write("\t\tif(listBean==null||listBean.isEmpty()){\n");
+            bw.write("\t\t\treturn 0;\n");
+            bw.write("\t\t}\n");
+            bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".insertBatch(listBean);\n");
+            bw.write("\t}\n\n");
+
             BuildComment.createMethodComment(bw,"批量新增/修改");
-            bw.write("\tpublic Integer addOrUpdateBatch("+tableInfo.getBeanName()+" bean){\n");
+            bw.write("\t@Override\n");
+            bw.write("\tpublic Integer addOrUpdateBatch(List<"+tableInfo.getBeanName()+"> listBean){\n");
+            bw.write("\t\tif(listBean==null||listBean.isEmpty()){\n");
+            bw.write("\t\t\treturn 0;\n");
+            bw.write("\t\t}\n");
+            bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".insertOrUpdateBatch(listBean);\n");
             bw.write("\t}\n\n");
             for (Map.Entry<String, List<FieldInfo>> entry : tableInfo.getKeyIndexMap().entrySet()) {
                 List<FieldInfo> keyFieldInfList = entry.getValue();
                 Integer index = 0;
-                StringBuffer methodName = new StringBuffer();
-                StringBuffer methodParam = new StringBuffer();
+                StringBuilder methodName = new StringBuilder();
+                StringBuilder methodParam = new StringBuilder();
+                StringBuilder paramBuilder = new StringBuilder();
                 for (FieldInfo fieldInfo : keyFieldInfList) {
                     index++;
                     methodName.append(StringUtils.upperCaseFirstLetter(fieldInfo.getPropertyName()));
                     methodParam.append(fieldInfo.getJavaType()+" "+fieldInfo.getPropertyName());
+                    paramBuilder.append(fieldInfo.getPropertyName());
                     if (index < keyFieldInfList.size()) {
                         methodName.append("And");
                         methodParam.append(", ");
+                        paramBuilder.append(", ");
                     }
                 }
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"查询");
                 bw.write("\t@Override\n");
-                bw.write("\tpublic "+tableInfo.getBeanName()+" getBy"+methodName+"("+methodParam+"){\n");
+                bw.write("\tpublic "+tableInfo.getBeanName()+" get"+tableInfo.getBeanName()+"By"+methodName+"("+methodParam+"){\n");
+                bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".selectBy"+methodName+"("+paramBuilder+");\n");
                 bw.write("\t}\n\n");
 
 
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"更新");
-                bw.write("\tpublic Integer updateBy"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+"){\n");
+                bw.write("\tpublic Integer update"+tableInfo.getBeanName()+"By"+methodName+"("+tableInfo.getBeanName()+" bean, "+methodParam+"){\n");
+                bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".updateBy"+methodName+"(bean,"+paramBuilder+");\n");
+
                 bw.write("\t}\n\n");
                 bw.newLine();
                 BuildComment.createFieldComment(bw,"根据"+methodName+"删除");
-                bw.write("\tpublic Integer deleteBy"+methodName+"("+methodParam+"){\n");
+                bw.write("\tpublic Integer delete"+tableInfo.getBeanName()+"By"+methodName+"("+methodParam+"){\n");
+                bw.write("\t\treturn this."+StringUtils.lowerCaseFirstLetter(mapperName)+".deleteBy"+methodName+"("+paramBuilder+");\n");
+
                 bw.write("\t}\n\n");
             }
 
