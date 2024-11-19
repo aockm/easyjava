@@ -123,7 +123,7 @@ public class BuildMapperXml {
             bw.write("\t\tSELECT <include refid=\""+BASE_COLUMN_LIST+"\"/> FROM "+tableInfo.getTableName()+"\n");
             bw.write("\t\t<include refid=\""+QUERY_CONDITION+"\"/>\n");
             bw.write("\t\t<if test=\"query.orderBy!=null\">order by ${query.orderBy}</if>\n");
-            bw.write("\t\t<if test=\"query.simplePage!=null\">limit #{query.simplePage.start}, #{query.simplePage.end}</if>\n");
+            bw.write("\t\t<if test=\"query.simplePage!=null\">limit #{query.simplePage.startIndex}, #{query.simplePage.endIndex}</if>\n");
             bw.write("\t</select>\n\n");
 
             //  查询数量

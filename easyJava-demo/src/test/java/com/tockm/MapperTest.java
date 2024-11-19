@@ -6,6 +6,7 @@ import com.tockm.entity.query.NameInfoQuery;
 import com.tockm.entity.query.PhoneInfoQuery;
 import com.tockm.mappers.NameInfoMapper;
 import com.tockm.mappers.PhoneInfoMapper;
+import com.tockm.service.NameInfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * Unit test for simple App.
  */
-@SpringBootTest(classes = App.class)
+@SpringBootTest(classes = RunDemoApplication.class)
 @RunWith(SpringRunner.class)
 public class MapperTest {
     @Resource
@@ -85,5 +86,15 @@ public class MapperTest {
     @Test
     public void deleteById() {
         nameInfoMapper.deleteByName("lll2122");
+    }
+
+    @Resource
+    private NameInfoService nameInfoService;
+    @Test
+    public void findListByParam() {
+        NameInfoQuery nameInfoQuery = new NameInfoQuery();
+        nameInfoQuery.setPageSize(1);
+        List<NameInfo> listByParam = nameInfoService.findListByParam(nameInfoQuery);
+        System.out.println(listByParam);
     }
 }

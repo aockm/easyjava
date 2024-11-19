@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *@date: 2024/11/19
  */
 @RestController
+@RequestMapping("nameInfo")
 public class NameInfoController extends ABaseController {
 	@Resource
 	private NameInfoService nameInfoService;
@@ -28,6 +29,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 新增
 	 */
+	@RequestMapping("add")
 	public ResponseVo add(NameInfo bean){
 		nameInfoService.add(bean);
 		return getSuccessResponseVo(null);
@@ -36,6 +38,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 批量新增
 	 */
+	@RequestMapping("addBatch")
 	public ResponseVo addBatch(@RequestBody List<NameInfo> listBean){
 		nameInfoService.addBatch(listBean);
 		return getSuccessResponseVo(null);
@@ -44,6 +47,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 批量新增/修改
 	 */
+	@RequestMapping("addOrUpdateBatch")
 	public ResponseVo addOrUpdateBatch(@RequestBody List<NameInfo> listBean){
 		nameInfoService.addOrUpdateBatch(listBean);
 		return getSuccessResponseVo(null);
@@ -53,6 +57,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 根据Id查询
 	 */
+	@RequestMapping("getNameInfoById")
 	public ResponseVo getNameInfoById(Integer id){
 		return getSuccessResponseVo(nameInfoService.getNameInfoById(id));
 	}
@@ -61,6 +66,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 根据Id更新
 	 */
+	@RequestMapping("updateNameInfoById")
 	public ResponseVo updateNameInfoById(NameInfo bean, Integer id){
 		return getSuccessResponseVo(nameInfoService.updateNameInfoById(bean,id));
 	}
@@ -69,6 +75,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 根据Id删除
 	 */
+	@RequestMapping("deleteNameInfoById")
 	public ResponseVo deleteNameInfoById(Integer id){
 		return getSuccessResponseVo(nameInfoService.deleteNameInfoById(id));
 	}
@@ -77,6 +84,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 根据Name查询
 	 */
+	@RequestMapping("getNameInfoByName")
 	public ResponseVo getNameInfoByName(String name){
 		return getSuccessResponseVo(nameInfoService.getNameInfoByName(name));
 	}
@@ -85,6 +93,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 根据Name更新
 	 */
+	@RequestMapping("updateNameInfoByName")
 	public ResponseVo updateNameInfoByName(NameInfo bean, String name){
 		return getSuccessResponseVo(nameInfoService.updateNameInfoByName(bean,name));
 	}
@@ -93,6 +102,7 @@ public class NameInfoController extends ABaseController {
 	/**
 	 * 根据Name删除
 	 */
+	@RequestMapping("deleteNameInfoByName")
 	public ResponseVo deleteNameInfoByName(String name){
 		return getSuccessResponseVo(nameInfoService.deleteNameInfoByName(name));
 	}

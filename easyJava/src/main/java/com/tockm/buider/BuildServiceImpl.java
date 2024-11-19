@@ -42,7 +42,7 @@ public class BuildServiceImpl {
             bw.write("import org.springframework.stereotype.Service;\n");
             bw.newLine();
             BuildComment.createClassComment(bw,tableInfo.getComment()+"Service");
-            bw.write("@Service(\""+StringUtils.lowerCaseFirstLetter(interfaceName)+"\")\n");
+            bw.write("@Service(\""+StringUtils.lowerCaseFirstLetter(tableInfo.getBeanName())+"Service\")\n");
             bw.write("public class "+className+" implements "+interfaceName+" {\n");
             bw.write("\t@Resource\n");
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *@date: 2024/11/19
  */
 @RestController
+@RequestMapping("phoneInfo")
 public class PhoneInfoController extends ABaseController {
 	@Resource
 	private PhoneInfoService phoneInfoService;
@@ -28,6 +29,7 @@ public class PhoneInfoController extends ABaseController {
 	/**
 	 * 新增
 	 */
+	@RequestMapping("add")
 	public ResponseVo add(PhoneInfo bean){
 		phoneInfoService.add(bean);
 		return getSuccessResponseVo(null);
@@ -36,6 +38,7 @@ public class PhoneInfoController extends ABaseController {
 	/**
 	 * 批量新增
 	 */
+	@RequestMapping("addBatch")
 	public ResponseVo addBatch(@RequestBody List<PhoneInfo> listBean){
 		phoneInfoService.addBatch(listBean);
 		return getSuccessResponseVo(null);
@@ -44,6 +47,7 @@ public class PhoneInfoController extends ABaseController {
 	/**
 	 * 批量新增/修改
 	 */
+	@RequestMapping("addOrUpdateBatch")
 	public ResponseVo addOrUpdateBatch(@RequestBody List<PhoneInfo> listBean){
 		phoneInfoService.addOrUpdateBatch(listBean);
 		return getSuccessResponseVo(null);
@@ -53,6 +57,7 @@ public class PhoneInfoController extends ABaseController {
 	/**
 	 * 根据Id查询
 	 */
+	@RequestMapping("getPhoneInfoById")
 	public ResponseVo getPhoneInfoById(Integer id){
 		return getSuccessResponseVo(phoneInfoService.getPhoneInfoById(id));
 	}
@@ -61,6 +66,7 @@ public class PhoneInfoController extends ABaseController {
 	/**
 	 * 根据Id更新
 	 */
+	@RequestMapping("updatePhoneInfoById")
 	public ResponseVo updatePhoneInfoById(PhoneInfo bean, Integer id){
 		return getSuccessResponseVo(phoneInfoService.updatePhoneInfoById(bean,id));
 	}
@@ -69,6 +75,7 @@ public class PhoneInfoController extends ABaseController {
 	/**
 	 * 根据Id删除
 	 */
+	@RequestMapping("deletePhoneInfoById")
 	public ResponseVo deletePhoneInfoById(Integer id){
 		return getSuccessResponseVo(phoneInfoService.deletePhoneInfoById(id));
 	}
