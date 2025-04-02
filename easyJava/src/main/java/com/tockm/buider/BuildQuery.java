@@ -60,7 +60,7 @@ public class BuildQuery {
                     bw.write("\tprivate " + field.getJavaType()+" " +properName+";\n");
                     bw.newLine();
                 }
-                if(ArrayUtils.contains(Constants.SQL_DATE_TYPE,field.getSqlType())||ArrayUtils.contains(Constants.SQL_DATE_TYPE,field.getSqlType())){
+                if(ArrayUtils.contains(Constants.SQL_DATE_TYPE,field.getSqlType())||ArrayUtils.contains(Constants.SQL_DATE_TIME_TYPE,field.getSqlType())){
                     String properStartName = field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_START;
                     String properEndName = field.getPropertyName() + Constants.SUFFIX_BEAN_QUERY_TIME_END;
                     bw.write("\tprivate String " + properStartName+";\n");

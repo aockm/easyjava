@@ -269,8 +269,9 @@ public class BuildMapperXml {
                 bw.write("\t\twhere "+methodParam+"\n");
                 bw.write("\t</select>\n\n");
 
+                // 新增根据参数更新
                 bw.write("\t<!-- 根据"+methodName+"更新 -->\n");
-                bw.write("\t<update id=\"updateBy"+methodName+"\" parameterType=\""+poName+"\">\n");
+                bw.write("\t<update id=\"updateByParam"+"\" parameterType=\""+poName+"\">\n");
                 bw.write("\t\tupdate "+tableInfo.getTableName()+"\n");
                 bw.write("\t\t<set>\n");
                 for (FieldInfo field:tableInfo.getFieldList()) {
@@ -280,8 +281,10 @@ public class BuildMapperXml {
                     bw.write("\t\t\t</if>\n");
                 }
                 bw.write("\t\t</set>\n");
-                bw.write("\t\twhere "+methodParam+"\n");
+                bw.write("\t\twhere <include refid=\"base_query_condition\"/>\n");
                 bw.write("\t</update>\n\n");
+
+
 
                 bw.write("\t<!-- 根据"+methodName+"删除 -->\n");
                 bw.write("\t<delete id=\"deleteBy"+methodName+"\">\n");

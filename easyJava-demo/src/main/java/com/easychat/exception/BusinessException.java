@@ -1,3 +1,7 @@
+package com.easychat.exception;
+
+import com.easychat.enums.ResponseCodeEnum;
+
 public class BusinessException extends Exception {
     private ResponseCodeEnum codeEnum;
     private Integer code;
