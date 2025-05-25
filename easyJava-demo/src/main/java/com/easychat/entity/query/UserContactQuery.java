@@ -5,7 +5,7 @@ import java.util.Date;
 
 /**
  *@Description: 联系人查询
- *@date: 2025/04/02
+ *@date: 2025/05/12
  */
 public class UserContactQuery extends BaseQuery {
 	/**

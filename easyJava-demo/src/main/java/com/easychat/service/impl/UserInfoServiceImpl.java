@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 /**
  *@Description: Service
- *@date: 2025/04/02
+ *@date: 2025/05/25
  */
 @Service("userInfoService")
 public class UserInfoServiceImpl implements UserInfoService {
@@ -76,33 +76,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return 0;
 		}
 		return this.userInfoMapper.insertOrUpdateBatch(listBean);
-	}
-
-
-	/**
-	 * 根据UserId查询
-	 */
-	@Override
-	public UserInfo getUserInfoByUserId(String userId){
-		return this.userInfoMapper.selectByUserId(userId);
-	}
-
-
-	/**
-	 * 根据UserId更新
-	 */
-	@Override
-	public Integer updateUserInfoByUserId(UserInfo bean, String userId){
-		return this.userInfoMapper.updateByUserId(bean,userId);
-	}
-
-
-	/**
-	 * 根据UserId删除
-	 */
-	@Override
-	public Integer deleteUserInfoByUserId(String userId){
-		return this.userInfoMapper.deleteByUserId(userId);
 	}
 
 }

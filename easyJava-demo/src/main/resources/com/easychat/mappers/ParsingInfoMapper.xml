@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.easychat.mappers.ParsingInfoMapper">
+	<!--实体类映射-->
+	<resultMap id="base_result_map" type="com.easychat.entity.po.ParsingInfo">
+		<!--主键ID-->
+		<id column="id" property="id"/>
+		<!--openId-->
+		<result column="user_open_id" property="userOpenId"/>
+		<!--视频链接-->
+		<result column="download_url" property="downloadUrl"/>
+		<!--视频标题-->
+		<result column="title" property="title"/>
+		<!--视频作者-->
+		<result column="author" property="author"/>
+		<!--视频封面地址-->
+		<result column="cover" property="cover"/>
+		<!--创建时间-->
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+
+	<!--通用查询结果列-->
+	<sql id="base_column_list" >
+		id,user_open_id,download_url,title,author,cover,create_time
+	</sql>
+
+	<!--基础查询条件-->
+	<sql id="base_query_condition" >
+		<if test="query.id!=null">
+			and id = #{query.id}
+		</if>
+		<if test="query.userOpenId!=null and query.userOpenId!='' ">
+			and user_open_id = #{query.userOpenId}
+		</if>
+		<if test="query.downloadUrl!=null and query.downloadUrl!='' ">
+			and download_url = #{query.downloadUrl}
+		</if>
+		<if test="query.title!=null and query.title!='' ">
+			and title = #{query.title}
+		</if>
+		<if test="query.author!=null and query.author!='' ">
+			and author = #{query.author}
+		</if>
+		<if test="query.cover!=null and query.cover!='' ">
+			and cover = #{query.cover}
+		</if>
+		<if test="query.createTime!=null">
+			and create_time = #{query.createTime}
+		</if>
+	</sql>
+
+	<!--扩展查询条件列-->
+	<sql id="query_condition_extend" >
+		<if test="query.userOpenIdFuzzy!=null and query.userOpenIdFuzzy!='' ">
+			 and user_open_id like concat ('%',#{query.userOpenIdFuzzy}, '%')
+		</if>
+		<if test="query.downloadUrlFuzzy!=null and query.downloadUrlFuzzy!='' ">
+			 and download_url like concat ('%',#{query.downloadUrlFuzzy}, '%')
+		</if>
+		<if test="query.titleFuzzy!=null and query.titleFuzzy!='' ">
+			 and title like concat ('%',#{query.titleFuzzy}, '%')
+		</if>
+		<if test="query.authorFuzzy!=null and query.authorFuzzy!='' ">
+			 and author like concat ('%',#{query.authorFuzzy}, '%')
+		</if>
+		<if test="query.coverFuzzy!=null and query.coverFuzzy!='' ">
+			 and cover like concat ('%',#{query.coverFuzzy}, '%')
+		</if>
+	</sql>
+
+	<!--扩展的查询条件-->
+	<sql id="query_condition" >
+		<where>
+			<include refid="base_query_condition" />
+			<include refid="query_condition_extend" />
+		</where>
+
+	</sql>
+
+	<!--查询集合-->
+	<select id="selectList" resultMap="base_result_map">
+		SELECT <include refid="base_column_list"/> FROM parsing_info
+		<include refid="query_condition"/>
+		<if test="query.orderBy!=null">order by ${query.orderBy}</if>
+		<if test="query.simplePage!=null">limit #{query.simplePage.startIndex}, #{query.simplePage.endIndex}</if>
+	</select>
+
+	<!--查询集合-->
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT count(1) FROM parsing_info
+		<include refid="query_condition"/>
+	</select>
+
+	<!--插入（匹配有值字段）-->
+	<insert id="insert" parameterType="com.easychat.entity.po.ParsingInfo">
+		<selectKey keyProperty="bean.id" resultType="Long" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO parsing_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				id,
+			</if>
+			<if test="bean.userOpenId!=null">
+				user_open_id,
+			</if>
+			<if test="bean.downloadUrl!=null">
+				download_url,
+			</if>
+			<if test="bean.title!=null">
+				title,
+			</if>
+			<if test="bean.author!=null">
+				author,
+			</if>
+			<if test="bean.cover!=null">
+				cover,
+			</if>
+			<if test="bean.createTime!=null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				#{bean.id},
+			</if>
+			<if test="bean.userOpenId!=null">
+				#{bean.userOpenId},
+			</if>
+			<if test="bean.downloadUrl!=null">
+				#{bean.downloadUrl},
+			</if>
+			<if test="bean.title!=null">
+				#{bean.title},
+			</if>
+			<if test="bean.author!=null">
+				#{bean.author},
+			</if>
+			<if test="bean.cover!=null">
+				#{bean.cover},
+			</if>
+			<if test="bean.createTime!=null">
+				#{bean.createTime},
+			</if>
+		</trim>
+	</insert>
+
+	<!--插入或更新（匹配有值字段）-->
+	<insert id="insertOrUpdate" parameterType="com.easychat.entity.po.ParsingInfo">
+		INSERT INTO parsing_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				id,
+			</if>
+			<if test="bean.userOpenId!=null">
+				user_open_id,
+			</if>
+			<if test="bean.downloadUrl!=null">
+				download_url,
+			</if>
+			<if test="bean.title!=null">
+				title,
+			</if>
+			<if test="bean.author!=null">
+				author,
+			</if>
+			<if test="bean.cover!=null">
+				cover,
+			</if>
+			<if test="bean.createTime!=null">
+				create_time,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.id!=null">
+				#{bean.id},
+			</if>
+			<if test="bean.userOpenId!=null">
+				#{bean.userOpenId},
+			</if>
+			<if test="bean.downloadUrl!=null">
+				#{bean.downloadUrl},
+			</if>
+			<if test="bean.title!=null">
+				#{bean.title},
+			</if>
+			<if test="bean.author!=null">
+				#{bean.author},
+			</if>
+			<if test="bean.cover!=null">
+				#{bean.cover},
+			</if>
+			<if test="bean.createTime!=null">
+				#{bean.createTime},
+			</if>
+		</trim>
+		on DUPLICATE key update
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.id!=null">
+				id = VALUES(id),
+			</if>
+			<if test="bean.userOpenId!=null">
+				user_open_id = VALUES(user_open_id),
+			</if>
+			<if test="bean.downloadUrl!=null">
+				download_url = VALUES(download_url),
+			</if>
+			<if test="bean.title!=null">
+				title = VALUES(title),
+			</if>
+			<if test="bean.author!=null">
+				author = VALUES(author),
+			</if>
+			<if test="bean.cover!=null">
+				cover = VALUES(cover),
+			</if>
+			<if test="bean.createTime!=null">
+				create_time = VALUES(create_time),
+			</if>
+		</trim>
+	</insert>
+
+	<!--添加（批量插入）-->
+	<insert id="insertBatch" parameterType="com.easychat.entity.po.ParsingInfo">
+		INSERT INTO parsing_info(user_open_id,download_url,title,author,cover,create_time)values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.userOpenId},#{item.downloadUrl},#{item.title},#{item.author},#{item.cover},#{item.createTime}
+		)
+		</foreach>
+	</insert>
+
+	<!-- 批量添加 修改（批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.easychat.entity.po.ParsingInfo">
+		INSERT INTO parsing_info(user_open_id,download_url,title,author,cover,create_time)values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.userOpenId},#{item.downloadUrl},#{item.title},#{item.author},#{item.cover},#{item.createTime})
+		</foreach>
+		on DUPLICATE key update
+		user_open_id = VALUES(user_open_id),
+		download_url = VALUES(download_url),
+		title = VALUES(title),
+		author = VALUES(author),
+		cover = VALUES(cover),
+		create_time = VALUES(create_time)
+	</insert>
+
+	<!-- 根据主键修改 -->
+	<!-- 根据Id查询 -->
+	<select id="selectById" resultMap="base_result_map">
+		select <include refid="base_column_list"/>
+		from parsing_info
+		where id=#{id}
+	</select>
+
+	<!-- 根据Id更新 -->
+	<update id="updateByParam" parameterType="com.easychat.entity.po.ParsingInfo">
+		update parsing_info
+		<set>
+			<if test="bean.userOpenId!=null">
+				user_open_id = #{bean.userOpenId},
+			</if>
+			<if test="bean.downloadUrl!=null">
+				download_url = #{bean.downloadUrl},
+			</if>
+			<if test="bean.title!=null">
+				title = #{bean.title},
+			</if>
+			<if test="bean.author!=null">
+				author = #{bean.author},
+			</if>
+			<if test="bean.cover!=null">
+				cover = #{bean.cover},
+			</if>
+			<if test="bean.createTime!=null">
+				create_time = #{bean.createTime},
+			</if>
+		</set>
+		where <include refid="base_query_condition"/>
+	</update>
+
+	<!-- 根据Id删除 -->
+	<delete id="deleteById">
+		delete from parsing_info
+		where id=#{id}
+	</delete>
+
+</mapper>
+

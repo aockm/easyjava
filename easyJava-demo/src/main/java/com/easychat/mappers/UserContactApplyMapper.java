@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  *@Description: 联系人申请Mapper
- *@date: 2025/04/02
+ *@date: 2025/05/12
  */
 public interface UserContactApplyMapper<T,P> extends BaseMapper {
 

@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 /**
  *@Description: Mapper
- *@date: 2025/04/02
+ *@date: 2025/05/12
  */
 public interface GroupInfoMapper<T,P> extends BaseMapper {
 

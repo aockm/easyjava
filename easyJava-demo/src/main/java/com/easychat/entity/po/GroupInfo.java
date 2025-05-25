@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *@Description: 
- *@date: 2025/04/02
+ *@date: 2025/05/12
  */
 public class GroupInfo implements Serializable {
 	/**

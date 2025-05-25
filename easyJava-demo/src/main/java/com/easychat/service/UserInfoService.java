@@ -6,7 +6,7 @@ import com.easychat.entity.vo.PaginationResultVo;
 
 /**
  *@Description: Service
- *@date: 2025/04/02
+ *@date: 2025/05/25
  */
 public interface UserInfoService {
 	/**
@@ -33,19 +33,4 @@ public interface UserInfoService {
 	 * 批量新增/修改
 	 */
 	Integer addOrUpdateBatch(List<UserInfo> bean);
-
-	/**
-	 * 根据UserId查询
-	 */
-	UserInfo getUserInfoByUserId(String userId);
-
-	/**
-	 * 根据UserId更新
-	 */
-	Integer updateUserInfoByUserId(UserInfo bean, String userId);
-
-	/**
-	 * 根据UserId删除
-	 */
-	Integer deleteUserInfoByUserId(String userId);
 }

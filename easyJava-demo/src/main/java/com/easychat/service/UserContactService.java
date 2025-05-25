@@ -6,7 +6,7 @@ import com.easychat.entity.vo.PaginationResultVo;
 
 /**
  *@Description: 联系人Service
- *@date: 2025/04/02
+ *@date: 2025/05/12
  */
 public interface UserContactService {
 	/**

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *@Description: Service
- *@date: 2025/04/02
+ *@date: 2025/05/25
  */
 @RestController
 @RequestMapping("userInfo")
@@ -51,33 +51,6 @@ public class UserInfoController extends ABaseController {
 	public ResponseVo addOrUpdateBatch(@RequestBody List<UserInfo> listBean){
 		userInfoService.addOrUpdateBatch(listBean);
 		return getSuccessResponseVo(null);
-	}
-
-
-	/**
-	 * 根据UserId查询
-	 */
-	@RequestMapping("getUserInfoByUserId")
-	public ResponseVo getUserInfoByUserId(String userId){
-		return getSuccessResponseVo(userInfoService.getUserInfoByUserId(userId));
-	}
-
-
-	/**
-	 * 根据UserId更新
-	 */
-	@RequestMapping("updateUserInfoByUserId")
-	public ResponseVo updateUserInfoByUserId(UserInfo bean, String userId){
-		return getSuccessResponseVo(userInfoService.updateUserInfoByUserId(bean,userId));
-	}
-
-
-	/**
-	 * 根据UserId删除
-	 */
-	@RequestMapping("deleteUserInfoByUserId")
-	public ResponseVo deleteUserInfoByUserId(String userId){
-		return getSuccessResponseVo(userInfoService.deleteUserInfoByUserId(userId));
 	}
 
 }

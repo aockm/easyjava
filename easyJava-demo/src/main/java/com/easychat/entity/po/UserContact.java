@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  *@Description: 联系人
- *@date: 2025/04/02
+ *@date: 2025/05/12
  */
 public class UserContact implements Serializable {
 	/**
