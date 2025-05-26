@@ -144,7 +144,7 @@ public class BuildMapperXml {
             bw.write("\t<!--插入（匹配有值字段）-->\n");
             bw.write("\t<insert id=\"insert\" parameterType=\""+poName+"\">\n");
             if (autoIncrementField!=null) {
-                bw.write("\t\t<selectKey keyProperty=\"bean."+autoIncrementField.getFieldName()+"\" resultType=\""+autoIncrementField.getJavaType()+"\" order=\"AFTER\">\n");
+                bw.write("\t\t<selectKey keyProperty=\"bean."+autoIncrementField.getPropertyName()+"\" resultType=\""+autoIncrementField.getJavaType()+"\" order=\"AFTER\">\n");
                 bw.write("\t\t\tSELECT LAST_INSERT_ID()\n");
                 bw.write("\t\t</selectKey>\n");
             }

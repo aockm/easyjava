@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tockm.mappers.UserInfoMapper">
+	<!--实体类映射-->
+	<resultMap id="base_result_map" type="com.tockm.entity.po.UserInfo">
+		<!---->
+		<id column="user_id" property="userId"/>
+		<!---->
+		<result column="username" property="username"/>
+		<!---->
+		<result column="email" property="email"/>
+		<!---->
+		<result column="password" property="password"/>
+	</resultMap>
+
+	<!--通用查询结果列-->
+	<sql id="base_column_list" >
+		user_id,username,email,password
+	</sql>
+
+	<!--基础查询条件-->
+	<sql id="base_query_condition" >
+		<if test="query.userId!=null">
+			and user_id = #{query.userId}
+		</if>
+		<if test="query.username!=null and query.username!='' ">
+			and username = #{query.username}
+		</if>
+		<if test="query.email!=null and query.email!='' ">
+			and email = #{query.email}
+		</if>
+		<if test="query.password!=null and query.password!='' ">
+			and password = #{query.password}
+		</if>
+	</sql>
+
+	<!--扩展查询条件列-->
+	<sql id="query_condition_extend" >
+		<if test="query.usernameFuzzy!=null and query.usernameFuzzy!='' ">
+			 and username like concat ('%',#{query.usernameFuzzy}, '%')
+		</if>
+		<if test="query.emailFuzzy!=null and query.emailFuzzy!='' ">
+			 and email like concat ('%',#{query.emailFuzzy}, '%')
+		</if>
+		<if test="query.passwordFuzzy!=null and query.passwordFuzzy!='' ">
+			 and password like concat ('%',#{query.passwordFuzzy}, '%')
+		</if>
+	</sql>
+
+	<!--扩展的查询条件-->
+	<sql id="query_condition" >
+		<where>
+			<include refid="base_query_condition" />
+			<include refid="query_condition_extend" />
+		</where>
+
+	</sql>
+
+	<!--查询集合-->
+	<select id="selectList" resultMap="base_result_map">
+		SELECT <include refid="base_column_list"/> FROM user_info
+		<include refid="query_condition"/>
+		<if test="query.orderBy!=null">order by ${query.orderBy}</if>
+		<if test="query.simplePage!=null">limit #{query.simplePage.startIndex}, #{query.simplePage.endIndex}</if>
+	</select>
+
+	<!--查询集合-->
+	<select id="selectCount" resultType="java.lang.Integer">
+		SELECT count(1) FROM user_info
+		<include refid="query_condition"/>
+	</select>
+
+	<!--插入（匹配有值字段）-->
+	<insert id="insert" parameterType="com.tockm.entity.po.UserInfo">
+		<selectKey keyProperty="bean.userId" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+		INSERT INTO user_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.userId!=null">
+				user_id,
+			</if>
+			<if test="bean.username!=null">
+				username,
+			</if>
+			<if test="bean.email!=null">
+				email,
+			</if>
+			<if test="bean.password!=null">
+				password,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.userId!=null">
+				#{bean.userId},
+			</if>
+			<if test="bean.username!=null">
+				#{bean.username},
+			</if>
+			<if test="bean.email!=null">
+				#{bean.email},
+			</if>
+			<if test="bean.password!=null">
+				#{bean.password},
+			</if>
+		</trim>
+	</insert>
+
+	<!--插入或更新（匹配有值字段）-->
+	<insert id="insertOrUpdate" parameterType="com.tockm.entity.po.UserInfo">
+		INSERT INTO user_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="bean.userId!=null">
+				user_id,
+			</if>
+			<if test="bean.username!=null">
+				username,
+			</if>
+			<if test="bean.email!=null">
+				email,
+			</if>
+			<if test="bean.password!=null">
+				password,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="bean.userId!=null">
+				#{bean.userId},
+			</if>
+			<if test="bean.username!=null">
+				#{bean.username},
+			</if>
+			<if test="bean.email!=null">
+				#{bean.email},
+			</if>
+			<if test="bean.password!=null">
+				#{bean.password},
+			</if>
+		</trim>
+		on DUPLICATE key update
+		<trim prefix="" suffix="" suffixOverrides=",">
+			<if test="bean.userId!=null">
+				user_id = VALUES(user_id),
+			</if>
+			<if test="bean.username!=null">
+				username = VALUES(username),
+			</if>
+			<if test="bean.email!=null">
+				email = VALUES(email),
+			</if>
+			<if test="bean.password!=null">
+				password = VALUES(password),
+			</if>
+		</trim>
+	</insert>
+
+	<!--添加（批量插入）-->
+	<insert id="insertBatch" parameterType="com.tockm.entity.po.UserInfo">
+		INSERT INTO user_info(username,email,password)values
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.username},#{item.email},#{item.password}
+		)
+		</foreach>
+	</insert>
+
+	<!-- 批量添加 修改（批量插入）-->
+	<insert id="insertOrUpdateBatch" parameterType="com.tockm.entity.po.UserInfo">
+		INSERT INTO user_info(username,email,password)values
+		<foreach collection="list" item="item" separator=",">
+			(#{item.username},#{item.email},#{item.password})
+		</foreach>
+		on DUPLICATE key update
+		username = VALUES(username),
+		email = VALUES(email),
+		password = VALUES(password)
+	</insert>
+
+	<!-- 根据主键修改 -->
+	<!-- 根据UserId查询 -->
+	<select id="selectByUserId" resultMap="base_result_map">
+		select <include refid="base_column_list"/>
+		from user_info
+		where user_id=#{userId}
+	</select>
+
+	<!-- 根据UserId更新 -->
+	<update id="updateByParam" parameterType="com.tockm.entity.po.UserInfo">
+		update user_info
+		<set>
+			<if test="bean.username!=null">
+				username = #{bean.username},
+			</if>
+			<if test="bean.email!=null">
+				email = #{bean.email},
+			</if>
+			<if test="bean.password!=null">
+				password = #{bean.password},
+			</if>
+		</set>
+		where <include refid="base_query_condition"/>
+	</update>
+
+	<!-- 根据UserId删除 -->
+	<delete id="deleteByUserId">
+		delete from user_info
+		where user_id=#{userId}
+	</delete>
+
+</mapper>
+
